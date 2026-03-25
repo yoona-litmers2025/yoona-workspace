@@ -1,0 +1,16 @@
+# Real client data — do not commit
+clients/koboom/
+clients/baraecnp/
+clients/booktails/
+clients/21gram/
+glossary/koboom.md
+glossary/baraecnp.md
+glossary/booktails.md
+glossary/21gram.md
+handoffs/baraecnp/
+
+# Local settings (per-user permissions, paths)
+.claude/settings.local.json
+
+# OS files
+.DS_Store
