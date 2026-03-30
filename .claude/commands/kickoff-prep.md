@@ -26,8 +26,11 @@ allowed-tools: Read, Glob, Grep, mcp__claude_ai_Notion__notion-fetch, mcp__claud
    - **Part B**: Internal Prep Notes (영어, PM용)
      - Key Risks / Blocking Questions / Glossary Gaps / Timeline Discussion Points
 5. **SRS Ambiguities 반영**: SRS 번역본의 "Ambiguities & Open Questions"을 킥오프 안건에 자동 포함
-6. **Notion에 저장**: 프로젝트 문서 DB에 페이지 생성
-   - 유형: Kickoff 자료
-   - 단계: Kickoff
-   - 상태: 진행 중
-   - 언어: KR (Part A) — Part B는 하위 섹션으로 포함
+6. **Notion에 저장**: 프로젝트 문서 DB에 **2개 페이지** 각각 생성
+   - **Part A 페이지**: 킥오프 안건 (고객사용)
+     - 문서명: "고객사 킥오프"
+     - 유형: Kickoff 자료 / 단계: Kickoff / 상태: 진행 중 / 언어: KR
+   - **Part B 페이지**: Internal Prep Notes (PM용)
+     - 문서명: "Dev kick-off"
+     - 유형: Kickoff 자료 / 단계: Kickoff / 상태: 진행 중 / 언어: EN
+   - 한 페이지에 합치지 않음 — 고객 전달 및 내부 관리 용이

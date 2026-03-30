@@ -44,25 +44,47 @@ allowed-tools: Read, Write, Glob, Grep, Bash(mkdir:*), mcp__claude_ai_Notion__no
 ### Step 4: PM Workspace에 프로젝트 토글 + 필터 뷰 추가
 PM Workspace (32c3aae9a8948001bf49fba5b9c4c34a) 페이지의 "프로젝트별" 섹션에:
 
-1. **토글 추가**: `### {project-name} {toggle="true"}` 안에:
-   - `#### 문서` + 링크드 뷰 (data-source-url="collection://58f9b49c-dd24-4ae5-a827-b954072c4b8b")
-   - `#### 커뮤니케이션` + 링크드 뷰 (data-source-url="collection://f3ea2e0c-f3d3-40a5-8dd5-364723c2f0fb")
+**구현 방법 (검증 완료):**
 
-2. **현재 PM workspace를 fetch**하여 새로 생성된 링크드 뷰의 database_id를 확인
+1. **토글 + linked view 삽입** — update_content로 아래 구조를 삽입:
+   ```
+   ### {project-name} {toggle="true"}
+   	#### 문서
+   	<database inline="true" data-source-url="collection://58f9b49c-dd24-4ae5-a827-b954072c4b8b">프로젝트 문서 보기</database>
+   	#### 커뮤니케이션
+   	<database inline="true" data-source-url="collection://f3ea2e0c-f3d3-40a5-8dd5-364723c2f0fb">커뮤니케이션 보기</database>
+   	#### 태스크
+   	<database inline="true" data-source-url="collection://6406d6c7-99c8-4465-880a-40c95b94eafc">태스크 DB 보기</database>
+   ```
+   **핵심: `url` 속성 생략, `data-source-url`만 사용.** Notion이 자동으로 새 linked view를 생성하고 고유 database ID를 할당함.
 
-3. **기본 뷰(첫 번째 탭)를 update-view로 수정** — 새 뷰를 추가로 만들지 말 것!
-   - 각 링크드 뷰의 첫 번째 뷰(이름 없는 기본 뷰)를 fetch로 view ID 확인
-   - update-view로 아래 설정 적용:
+2. **생성 확인** — PM Workspace를 다시 fetch하여 새 linked view의 database URL 확인
 
-   프로젝트 문서 뷰:
-   - name: "{project-name}"
-   - configure: `FILTER "프로젝트" = "{project-name}"; SORT BY "작성일" DESC; SHOW "문서명", "단계", "상태", "언어", "유형", "작성일", "전달일", "클라이언트", "프로젝트"`
+3. **각 linked view의 기본 뷰 ID 확인** — 각 linked view database를 fetch하여 view ID 확인
 
-   커뮤니케이션 뷰:
-   - name: "{project-name}"
-   - configure: `FILTER "프로젝트" = "{project-name}"; SORT BY "작성일" DESC; SHOW "제목", "방향", "상태", "유형", "작성일", "클라이언트", "프로젝트"`
+4. **update-view로 필터/정렬/표시 속성 적용:**
+   - 프로젝트 문서: `name: "{project-name}"; FILTER "프로젝트" = "{project-name}"; SORT BY "작성일" DESC; SHOW "문서명", "단계", "상태", "언어", "유형", "작성일", "전달일"`
+   - 커뮤니케이션: `name: "{project-name}"; FILTER "프로젝트" = "{project-name}"; SORT BY "작성일" DESC; SHOW "제목", "방향", "상태", "유형", "작성일"`
+   - 태스크: `name: "{project-name}"; FILTER "클라이언트" = "{client-name}"; SHOW "태스크", "상태", "우선순위", "AC", "비고", "스펙 출처"`
 
-**중요:** 뷰는 링크드 뷰당 딱 1개만. create-view 사용하지 말고 기본 뷰를 update-view로 수정할 것.
+**금지 사항:**
+- source DB의 `url`을 `<database>` 태그에 넣지 않음 — 원본 DB가 삽입되고 삭제 시 다른 linked view에 cascade 영향
+- 안내문/수동 설정 텍스트를 페이지에 삽입하지 않음
+- 성공하지 못한 상태를 성공으로 보고하지 않음
+
+**성공 기준:**
+- 새 프로젝트 토글이 기존 프로젝트(Koboom, PaperERP 등)와 동일한 UX
+- 각 linked view가 고유 database ID를 가짐 (source DB ID와 다름)
+- 필터/정렬/표시 속성이 적용됨
 
 ### Step 5: 완료 보고
-생성된 파일 목록과 Notion 구조 변경 사항을 사용자에게 보고합니다.
+```
+## 자동 생성 결과
+- 로컬 파일: ✅ / ❌
+- DB 옵션 추가 (3개 DB): ✅ / ❌
+- linked view 생성 (문서/커뮤니케이션/태스크): ✅ / ❌
+- 필터/정렬 설정: ✅ / ❌
+
+## 최종 상태
+- 기존 프로젝트와 동일한 구조 완성 여부: ✅ / ❌
+```

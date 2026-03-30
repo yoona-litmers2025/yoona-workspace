@@ -73,7 +73,7 @@ All document outputs go to Notion, not local files. Local workspace is for templ
 ### PM Workspace (hub page) — cigro workspace
 - Page: https://www.notion.so/32c3aae9a8948001bf49fba5b9c4c34a
 - Workspace: cigroio (yoona@litmers.com)
-- MCP: use `mcp__claude_ai_Notion__*` tools (NOT `mcp__notion__*`)
+- MCP: use `mcp__notion__*` tools
 
 ### 프로젝트 문서 DB
 - Database: https://www.notion.so/61294fbea27f486bb94207ecdf17b62e
@@ -92,6 +92,49 @@ All document outputs go to Notion, not local files. Local workspace is for templ
 - Data source: collection://6406d6c7-99c8-4465-880a-40c95b94eafc
 - Use for: /to-spec에서 생성된 개별 구현 태스크 관리
 - Properties: 태스크, 상태, 우선순위, 클라이언트, 프로젝트, 스펙 출처, AC, 비고
+
+## Output Quality Rules (공통)
+모든 스킬 출력에 적용:
+1. 결론 먼저 — 가장 중요한 정보가 첫 줄
+2. 한 bullet = 한 action — 하나의 불릿에 2개 이상의 실행 항목 넣지 않음
+3. 섹션 간 중복 금지 — 같은 정보가 2곳 이상에 나오면 안 됨
+4. audience filtering — dev에게 갈 내용과 client에게 갈 내용을 혼합하지 않음
+5. optional section은 내용이 있을 때만 — 빈 섹션 생성 금지
+6. 복붙 가능성 — 출력물은 그대로 복사하여 Teams/카톡에 붙여넣을 수 있어야 함
+7. 톤은 대상에 맞게 — dev: direct/practical, client: 클라이언트 CLAUDE.md 기준
+8. 용어 일관성 — glossary에 정의된 용어만 사용, 동의어 금지
+9. 추론 표시 — Claude가 추론한 내용은 반드시 [추론] 태그
+10. 길이 제한 — 핵심 요약은 4줄 이내, 개별 bullet은 2줄 이내
+
+## 확인 / 승인 요청 방식
+사용자 확인이 필요한 경우, 기본적으로 장문의 자유서술형 질문을 하지 않는다.
+
+원칙:
+- 확인 요청은 짧은 선택지 형식으로 제시
+- yes/no 또는 최대 3개 선택지만 사용
+- 항상 추천안을 함께 표시
+- 필요한 경우 설명은 1줄만 덧붙임
+- 가능하면 한 번에 하나의 확인 포인트만 제시
+- 실제로 사용자 판단이 꼭 필요하지 않으면 질문하지 말고 바로 진행
+- 애매하지만 합리적인 기본안이 있으면 그것을 1번 추천안으로
+- 사용자가 숫자만 입력해도 답할 수 있게 구성
+
+권장 형식:
+```
+[확인 필요]
+항목: [짧은 항목명]
+
+1. [추천안]
+2. [대안]
+3. [보류 / 생략]   ← 꼭 필요할 때만
+
+추천: 1
+```
+
+이 형식은 모든 사소한 사항에 적용하지 않음. 아래 경우에만 사용:
+- 결정에 따라 워크플로우나 결과물 구조가 달라질 때
+- 사용자 고유 선호를 반드시 확인해야 할 때
+- 확인 없이 진행하면 의미 있는 리스크가 있을 때
 
 ## Working With Files (local)
 - Templates are in `templates/` — use them as structure guides, not rigid forms
