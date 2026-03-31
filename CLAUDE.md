@@ -93,6 +93,12 @@ All document outputs go to Notion, not local files. Local workspace is for templ
 - Use for: /to-spec에서 생성된 개별 구현 태스크 관리
 - Properties: 태스크, 상태, 우선순위, 클라이언트, 프로젝트, 스펙 출처, AC, 비고
 
+### Daily Scrum Log DB
+- Database: https://www.notion.so/a0b985721843431a819468f072c42962
+- Data source: collection://eb2f7df2-0359-4c2c-85bb-6e12e3d73afc
+- Use for: /daily-scrum에서 생성된 일일 스크럼 로그
+- Properties: 제목, 클라이언트, 프로젝트, 날짜, 상태
+
 ## Output Quality Rules (공통)
 모든 스킬 출력에 적용:
 1. 결론 먼저 — 가장 중요한 정보가 첫 줄

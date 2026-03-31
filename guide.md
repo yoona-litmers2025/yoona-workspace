@@ -20,6 +20,8 @@
 SRS 번역          → /srs-translate
 킥오프 준비        → /kickoff-prep
 이슈 티켓         → /issue-ticket
+데일리 스크럼      → /daily-scrum
+내부 싱크 미팅     → /sync-note
 ```
 
 모든 스킬 공통: `/스킬명 [내용] --client [고객사명]`
@@ -33,6 +35,8 @@ SRS 번역          → /srs-translate
 - **client-chat**: 질문형 / 업데이트형 / 혼합형 자동 감지
 - **qa-request**: 검수/전달 요청 전용 (client-chat과 분리)
 - **to-spec**: 큰 기능/변경사항 → 스펙 페이지 + 태스크 DB
+- **daily-scrum**: 프로젝트별 daily check-in → Notion DB 로그 누적
+- **sync-note**: 내부 sync 미팅 → 개발팀 Teams 메시지 (dev-chat과 동일 톤)
 
 ---
 
@@ -46,7 +50,7 @@ yoona-workspace/
 ├── glossary/{name}.md           # 고객사별 용어집
 ├── templates/                   # 문서 구조 템플릿
 ├── handoffs/CLAUDE.md           # 개발팀 전달 체크리스트
-└── .claude/commands/            # 스킬 파일 (10개)
+└── .claude/commands/            # 스킬 파일 (12개)
     ├── meeting-note.md
     ├── dev-chat.md
     ├── client-chat.md
@@ -56,7 +60,9 @@ yoona-workspace/
     ├── new-project.md
     ├── srs-translate.md
     ├── kickoff-prep.md
-    └── issue-ticket.md
+    ├── issue-ticket.md
+    ├── daily-scrum.md
+    └── sync-note.md
 ```
 
 ---
@@ -64,5 +70,5 @@ yoona-workspace/
 ## Notion 연동
 
 - PM Workspace: https://www.notion.so/32c3aae9a8948001bf49fba5b9c4c34a
-- 프로젝트 문서 DB / 커뮤니케이션 DB / 태스크 DB
+- 프로젝트 문서 DB / 커뮤니케이션 DB / 태스크 DB / Daily Scrum Log DB
 - MCP 연결: `/mcp` → Notion 인증
