@@ -28,6 +28,14 @@ SRS 번역          → /srs-translate
 
 ---
 
+## CLI vs Desktop 앱
+
+- **세팅/운영**: CLI 사용 (`claude mcp add`, `claude mcp list`, workspace 이동 등)
+- **일상 업무**: Desktop 앱 병행 가능 — `/dev-chat`, `/client-chat` 등 복붙용 메시지는 Desktop 앱에서 확인하는 게 더 편함
+- 단, Desktop 앱도 `yoona-workspace` 폴더에서 열어야 스킬이 정상 동작
+
+---
+
 ## 핵심 구조
 
 - **meeting-note** = source of truth → dev-chat / client-chat은 downstream
