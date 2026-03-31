@@ -99,6 +99,12 @@ All document outputs go to Notion, not local files. Local workspace is for templ
 - Use for: /daily-scrum에서 생성된 일일 스크럼 로그
 - Properties: 제목, 클라이언트, 프로젝트, 날짜, 상태
 
+### PM Action Hub DB
+- Database: https://www.notion.so/7ab5868799c1451792da062d4c8fff37
+- Data source: collection://3a13db31-882c-4a6c-bddf-660e15ea9cdd
+- Use for: PM 운영 액션 관리 (/todo, /today-brief에서 사용)
+- Properties: 제목, 프로젝트, 상태, 우선순위, 액션 유형, 출처, 메모
+
 ## Output Quality Rules (공통)
 모든 스킬 출력에 적용:
 1. 결론 먼저 — 가장 중요한 정보가 첫 줄
