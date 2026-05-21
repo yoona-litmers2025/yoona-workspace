@@ -154,7 +154,8 @@ CLAUDE.md (전체 규칙)           → 항상 자동 로드
 - **보수적 자동화** — `--client` 자동 default는 24h 활동 기준 1개일 때만 + 명시 통보. `/todo` 프로젝트 자동 확정은 Notion select 옵션과 exact match일 때만
 - **확인 프롬프트 표준** — 3~4지 선택지 + "추천: N" 명시 + 한 번에 하나의 확인 포인트만
 - **Nexus PM Agent와 역할 경계** — 사내 공식 PM 에이전트가 sales→contract→kickoff→design.md→wireframe→handoff까지 Official source-of-truth 담당. **SRS는 2026-05-21부터 PM workspace canonical (living doc)** — `/to-spec` In-Round bucket이 writer. design.md / wireframe만 Nexus 영역 유지. PM 비-SRS 산출물은 항상 `Draft / PM Review / Dev-Handoff` 라벨, design.md / wireframe 생성·편집 금지. Nexus MCP는 현재 메타데이터(project/task/contract) read만 가능, 문서 콘텐츠(design.md / 녹음) read 불가 → 그런 입력은 로컬·Notion에서 받는다.
-- **SRS Living Document** — `/to-spec` In-Round bucket(gate=1)이 canonical writer로 SRS 본문 patch + 페이지 끝 `## Change Log`에 entry append. Append-only 불변식 (기존 entry 수정·삭제 X). 한국어 SRS canonical, 영문은 pointer-stub. PM Confirm Gate 4지선다 — gate=2(SRS skip) escape hatch는 drift 위험. `/meeting-note` Step 5.5와 자유 채팅 reflex는 감지만(자동 chain X).
+- **SRS Living Document** — `/to-spec` In-Round bucket(gate=1)이 canonical writer로 SRS 본문 patch + 페이지 끝 `## Change Log`에 entry append. Append-only 불변식 (기존 entry 수정·삭제 X). 한국어 SRS canonical, 영문은 pointer-stub. PM Confirm Gate 4지선다 — gate=2(SRS skip) escape hatch는 drift 위험.
+- **SRS-impact Mandatory Prompt (P6)** — `/meeting-note` Step 5.5 + 자유 채팅 reflex + 카톡 paste 인식 path에서 SRS-impact 감지 시 mandatory 3-choice prompt (1 지금 바로 /to-spec auto-invoke / 2 PM Action Hub /todo auto-invoke / 3 무시). /to-spec의 자체 4지선다 PM Confirm Gate가 2차 안전망.
 - **Hard-fail 최소화** — 외부 의존성(SRS, design.md) 부재 시 스킬 전체 실패 대신 partial-skip (해당 섹션만 "확인 필요"). Notion URL fetch 실패 시 free-text fallback.
 - **자동 chain 금지** — 신규 스킬은 다음 스킬을 자동 트리거하지 않음. "다음 단계" 안내만 출력. PM 수동 게이트.
 - **AI 공수 산정 금지** — 구체 수치(MD/hour/day) 임의 산정 금지, Impact 레벨만(Low/Medium/High/Unknown).

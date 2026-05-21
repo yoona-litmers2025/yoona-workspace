@@ -191,14 +191,16 @@ SRS는 PM workspace의 living document. 초기 SRS 이후 변경(카톡 / 미팅
 
 ### Writer Matrix
 
-| Path | SRS 본문 수정 | Change Log entry | PM gate |
+| Path | SRS 본문 수정 | Change Log entry | PM gate / Mandatory Prompt |
 |---|---|---|---|
-| `/to-spec` In-Round (gate=1) | YES (canonical writer) | YES | 통합 gate 1회 |
+| `/to-spec` In-Round (gate=1) | YES (canonical writer) | YES | 통합 4지선다 gate |
 | `/to-spec` In-Round (gate=2) | NO (escape hatch) | NO | 통합 gate |
-| `/meeting-note` Step 5.5 | NO (감지·권장만) | NO | — |
-| 자유 채팅 reflex | NO (권장만) | NO | — |
+| `/meeting-note` Step 5.5 | NO (감지) | NO | **Mandatory 3-choice prompt** (1건 이상): 1=지금 /to-spec auto-invoke / 2=PM Action Hub /todo auto-invoke / 3=무시 |
+| 자유 채팅 reflex + 카톡 paste | NO (감지) | NO | **Mandatory 3-choice prompt** (1건): 동일 |
 | `/create-srs` | YES (v1 seed) | YES (v1 entry) | 기존 미리보기 gate |
 | `/srs-translate` | YES (영문 v1) | YES (pointer-stub) | 기존 중복 감지 gate |
+
+**Auto-chain 정책 (P6, 2026-05-21)**: SRS-impact 감지 path에서 PM이 prompt 1 선택 시 다음 턴에서 `/to-spec` auto-invoke. PM 2 선택 시 `/todo`로 PM Action Hub에 follow-up 자동 등록. /to-spec의 자체 4지선다 Confirm Gate가 2차 안전망. 자유 채팅 path는 카톡 paste도 인식 (발신자+시각, 멀티라인+어조 패턴).
 
 ### Matching Algorithm
 
@@ -228,16 +230,33 @@ SRS는 PM workspace의 living document. 초기 SRS 이후 변경(카톡 / 미팅
 - §9에 `[확인 필요] SRS 미연결 — /create-srs 또는 PM 수동 연결 권장` 명시
 - `srs_update_count: 0` / `changelog_entries_added: 0` frontmatter 기록
 
-### 자유 채팅 Reflex
+### 자유 채팅 Reflex + 카톡 Paste (Mandatory 3-choice)
 
-사용자 발화가 다음 패턴을 모두 만족하면 "💡 SRS 영향 가능성 — /to-spec 권장" 1줄 prompt 출력 (자동 실행 X).
+사용자 발화 또는 카톡 paste가 다음 패턴을 만족하면 **mandatory 3-choice prompt** 출력 (1줄 권장이 아닌 명시 confirm 요구):
 
 조건 (AND):
 1. 주체 명시: "고객", "클라이언트", "<클라이언트명>", "미팅에서", "PM이"
 2. 변경 의도: "추가|변경|삭제|수정|해달라|원함|요청|결정"
 3. 명확한 기능·범위 — 단순 톤·문구 / 일정 합의 제외
 
-False-positive 방지: "그냥 메모", "비공식", "공식 아님" 명시되면 skip. 의문문 단독은 권장 X. PM이 "패스" 응답 시 silenced.
+**카톡 paste 인식 패턴** (위 AND에 OR 추가):
+- 발신자 이름 + 시각 표기 (예: `[오후 3:15] 홍길동:`)
+- 멀티라인 + "보내드려요 / 부탁드려요 / 가능할까요" 어조
+- 클라이언트 도메인 키워드 + 명확한 변경 요청
+
+Prompt 형식:
+```
+💡 SRS-impact 가능성 감지
+- 항목: <자동 추출 요약>
+
+지금 SRS 업데이트할까요?
+1. 지금 바로 — /to-spec 자동 호출
+2. 나중에 — PM Action Hub에 follow-up 등록 (/todo 자동 호출)
+3. 무시
+추천: 1
+```
+
+PM 선택 1 → 다음 턴에서 /to-spec auto-invoke (4지선다 Confirm Gate 통과). 2 → /todo auto-invoke. 3 → silenced. False-positive 방지: "그냥 메모" / "비공식" / 의문문 단독은 prompt X.
 
 ---
 
