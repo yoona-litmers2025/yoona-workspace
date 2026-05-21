@@ -1,7 +1,7 @@
 ---
 description: 아침 브리핑 — 오늘 할 일, 진행 중 현황 요약 (평일 10:30 자동 실행)
 argument-hint: (인자 없이 실행 또는 "오늘 뭐해야돼")
-allowed-tools: Read, Glob, Grep, Bash, mcp__google-workspace__*, mcp__notion-cigro__notion-fetch
+allowed-tools: Read, Glob, Grep, Bash, mcp__google-workspace__*, mcp__notion-cigro__notion-fetch, mcp__notion-cigro__notion-update-data-source
 ---
 
 # Today Brief
@@ -50,7 +50,19 @@ allowed-tools: Read, Glob, Grep, Bash, mcp__google-workspace__*, mcp__notion-cig
 
 ## Instructions
 
-> **병렬 호출 가능** — Step 1(Notion fetch)과 Step 2(Google Calendar)는 서로 독립적이므로 동일 턴에 병렬 호출할 것.
+> **병렬 호출 가능** — Step 0/1/2는 서로 독립적이므로 동일 턴에 병렬 호출할 것.
+
+0. **프로젝트 옵션 sync prelude (silent, daily 1회)**:
+   - 목적: /today-brief는 매일 10:30 자동 실행이라 PM Action Hub `프로젝트` select를 Projects DB와 daily 동기화하는 entry point로 활용
+   - 절차:
+     1. Projects DB (`collection://98c3ff93-01f1-4b2e-a490-d827ac079ffc`)에서 프로젝트 제목 목록 조회
+     2. PM Action Hub (`collection://a183aae9-a894-8379-8708-87cf507ec8e8`)의 `프로젝트` select 옵션 추출
+     3. diff 있으면 `mcp__notion-cigro__notion-update-data-source` 로 `ALTER COLUMN "프로젝트" SET SELECT(<기존 + 누락>)` 실행 (default color)
+     4. 기존 옵션 손실 금지 — fetch한 옵션 색상까지 모두 포함
+   - **안정성 룰**:
+     - 실패 hard-fail ❌ — 경고 1줄도 silent 처리 (briefing UX 방해 금지). Step 1/2/3 정상 진행
+     - 같은 세션 내 다회 호출 시 skip
+     - 출력에는 sync 결과 노출하지 않음 — briefing은 깨끗하게 유지
 
 1. **PM Action Hub 조회** (MCP, 단일 OR 쿼리):
    - `mcp__notion-cigro__notion-fetch` 사용

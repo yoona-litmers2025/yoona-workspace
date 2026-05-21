@@ -1,7 +1,7 @@
 ---
 description: 미팅 녹취/메모 → 미팅노트(Notion) + 개발팀 메시지 + 고객사 카톡 한번에 생성
 argument-hint: --client <name> [미팅 메모 또는 녹취 파일]
-allowed-tools: Read, Glob, Grep, Bash, mcp__notion-cigro__notion-create-pages, mcp__notion-cigro__notion-fetch, mcp__notion-cigro__notion-update-page
+allowed-tools: Read, Glob, Grep, Bash, mcp__notion-cigro__notion-create-pages, mcp__notion-cigro__notion-fetch, mcp__notion-cigro__notion-update-page, mcp__notion-cigro__notion-update-data-source
 ---
 
 # Meeting Note
@@ -22,6 +22,17 @@ allowed-tools: Read, Glob, Grep, Bash, mcp__notion-cigro__notion-create-pages, m
 **핵심 철학**: 이 스킬의 목적은 "더 많은 액션을 만드는 것"이 아니라 "실제 액션이 더 선명하게 보이게 하는 것". Action Item 개수가 줄어드는 건 회귀가 아니라 개선이다.
 
 ## Instructions
+
+### Step 0: 프로젝트 옵션 sync prelude (커뮤니케이션 DB)
+- 목적: 커뮤니케이션 DB `프로젝트`/`클라이언트` select가 Projects DB와 자동 동기화되게 보강 (drift 방지)
+- 절차:
+  1. Projects DB (`collection://98c3ff93-01f1-4b2e-a490-d827ac079ffc`)에서 프로젝트 제목 + 클라이언트 목록 조회
+  2. 커뮤니케이션 DB (`collection://47d3aae9-a894-83bf-8db8-071dd9a16fcd`)의 `프로젝트` + `클라이언트` select 현재 옵션 추출
+  3. 누락분 있으면 `mcp__notion-cigro__notion-update-data-source` 로 `ALTER COLUMN "프로젝트" SET SELECT(...)` + `ALTER COLUMN "클라이언트" SET SELECT(...)` 실행
+- **안정성 룰**:
+  - 실패 hard-fail ❌ — 경고 1줄 후 Step 1 진행 (미팅노트 작성이 막히면 안 됨)
+  - 기존 옵션 손실 금지 (색상까지 보존)
+  - 같은 세션 내 다회 호출 시 1회만 실행
 
 ### Step 1: 입력 파싱 + 컨텍스트 로드
 1. Named arguments 추출.

@@ -33,16 +33,25 @@ allowed-tools: Read, Write, Glob, Grep, mcp__notion-cigro__notion-fetch, mcp__no
    - Korean | English | Notes 테이블
    - 수집된 도메인 용어 매핑
 
-### Step 3: Notion DB에 프로젝트 옵션 추가 (MCP)
-1. 각 DB의 현재 schema 조회: `mcp__notion-cigro__notion-fetch`로 기존 SELECT 옵션 확인
-2. 프로젝트 문서 DB (`d7f3aae9a894831a96b2013549196181`)의 "프로젝트" SELECT 컬럼에 새 프로젝트명 옵션 추가
-3. 커뮤니케이션 DB (`3793aae9a894836e8a200120b24454e4`)의 "프로젝트" SELECT 컬럼에 새 프로젝트명 옵션 추가
-4. 태스크 DB (`b9f3aae9a8948322abee81e151af9831`)의 "클라이언트" SELECT 컬럼에 새 클라이언트명 옵션 추가
-5. Daily Scrum Log DB (`26b3aae9a89483b79de3810dce151383`, data_source_id `9e03aae9-a894-8377-bbaf-0717f5d7f2ef`)의 "프로젝트" SELECT 컬럼에 새 프로젝트명 옵션 추가, "클라이언트" SELECT 컬럼에 새 클라이언트명 옵션 추가
-- API: `mcp__notion-cigro__notion-update-data-source` 사용
-6. 필요 시 각 DB의 "클라이언트" SELECT 컬럼에도 옵션 추가
+### Step 3: Notion DB에 프로젝트/클라이언트 옵션 추가 (MCP)
 
-**주의:** 기존 옵션을 유지하면서 새 옵션만 추가할 것. UPDATE 시 기존 옵션도 모두 포함해야 함. **4개 DB 모두** (프로젝트 문서 / 커뮤니케이션 / 태스크 / Daily Scrum Log) 빠짐없이 업데이트할 것. Daily Scrum Log에 옵션이 미리 등록돼 있지 않으면 Step 4의 view 필터가 silent fail함.
+**원칙**: 새 프로젝트는 사용 가능한 모든 DB select에 한꺼번에 push (drift 방지의 root fix). PM workspace 5개 DB 전부 빠짐없이 업데이트.
+
+1. 각 DB의 현재 schema 조회: `mcp__notion-cigro__notion-fetch`로 기존 SELECT 옵션 추출
+2. **5개 DB 전부**에 `mcp__notion-cigro__notion-update-data-source`로 `ALTER COLUMN "<컬럼>" SET SELECT(<기존 옵션 + 새 옵션>)` 실행:
+
+| # | DB | data_source_id | 추가 컬럼 |
+|---|---|---|---|
+| 1 | 프로젝트 문서 | `bd33aae9-a894-82a9-b8e2-87387e7fbf47` | `프로젝트` + `클라이언트` |
+| 2 | 커뮤니케이션 | `47d3aae9-a894-83bf-8db8-071dd9a16fcd` | `프로젝트` + `클라이언트` |
+| 3 | 태스크 | `4273aae9-a894-83fd-8d5e-87897d6d0570` | `프로젝트` + `클라이언트` |
+| 4 | Daily Scrum Log | `9e03aae9-a894-8377-bbaf-0717f5d7f2ef` | `프로젝트` + `클라이언트` |
+| 5 | **PM Action Hub** | `a183aae9-a894-8379-8708-87cf507ec8e8` | `프로젝트` (클라이언트 컬럼 없음) |
+
+**주의:**
+- 기존 옵션 손실 금지 — ALTER 문에는 fetch한 기존 옵션을 색상까지 모두 포함, 새 옵션만 추가
+- **5개 DB 모두 누락 없이** 업데이트할 것. PM Action Hub 누락 시 `/todo`에서 새 프로젝트 exact match 실패 (Rayeon 사례)
+- Daily Scrum Log에 옵션 미등록이면 Step 4의 view 필터가 silent fail함
 
 ### Step 4: PM Workspace에 프로젝트 토글 + 필터 뷰 추가
 PM Workspace (CLAUDE.md의 PM Workspace 페이지 ID 참조) 페이지의 "프로젝트별" 섹션에:
@@ -126,7 +135,7 @@ https://www.notion.so/cigroio/Project-management-e22197abb0874209ac0aa93bb732c93
 ```
 ## 자동 생성 결과
 - 로컬 파일: ✅ / ❌
-- DB 옵션 추가 (3개 DB): ✅ / ❌
+- DB 옵션 추가 (5개 DB: 프로젝트 문서/커뮤니케이션/태스크/Daily Scrum/PM Action Hub): ✅ / ❌
 - linked view 생성 (문서/커뮤니케이션/Daily Scrum): ✅ / ❌
 - 필터/정렬 설정: ✅ / ❌
 - Project management 등록: ⏭️ 수동 등록 필요 (cigroio 워크스페이스)

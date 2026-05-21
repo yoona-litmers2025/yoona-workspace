@@ -20,6 +20,19 @@ allowed-tools: Read, Glob, Grep, mcp__notion-cigro__notion-create-pages, mcp__no
 
 ## Instructions
 
+0. **프로젝트 옵션 sync prelude (항상 먼저 실행)**:
+   - 목적: Projects DB가 source of truth, PM Action Hub `프로젝트` select가 자동으로 따라오게 보강
+   - 절차:
+     1. Projects DB (`collection://98c3ff93-01f1-4b2e-a490-d827ac079ffc`)에서 프로젝트 제목 목록 조회 (`mcp__notion-cigro__notion-fetch`)
+     2. PM Action Hub data source (`collection://a183aae9-a894-8379-8708-87cf507ec8e8`)의 `프로젝트` select 현재 옵션 추출
+     3. Projects DB ⊖ select 옵션 = 누락 프로젝트 (case-sensitive exact diff)
+     4. 누락 있으면 `mcp__notion-cigro__notion-update-data-source` 로 `ALTER COLUMN "프로젝트" SET SELECT(<기존 옵션 + color 보존, 누락분은 default color>)` 실행
+     5. 누락 없으면 즉시 다음 단계로
+   - **안정성 룰**:
+     - Sync prelude 실패(Projects DB fetch 실패 등)는 hard-fail ❌ — 경고 1줄 출력 후 기존 select 옵션 기준으로 Step 1 진행
+     - 기존 옵션 손실 금지 — ALTER 문에는 반드시 fetch한 기존 옵션 전부 포함
+     - 같은 세션 내 다회 호출 시 1회만 실행 (cache)
+
 1. **입력 파싱**:
    - **프로젝트명 감지 (보수적 자동 확정 — B2)**:
      1. 입력에서 `[대괄호]` 추출 시도
