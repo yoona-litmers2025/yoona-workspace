@@ -30,22 +30,22 @@
 
 | 상황 | 스킬 | 출력 |
 |------|------|------|
-| 미팅 끝남 | `/meeting-note` | Notion 미팅노트 (한눈에 보기 + 확정 사항 + Action Items 불릿 + 범위 밖 + 메모 이슈 + PM 배경) + Teams(EN) + 카톡(KR) |
+| 미팅 끝남 | `/meeting-note` | Notion 미팅노트 (한눈에 보기 + 확정 사항 + Action Items 불릿 + 범위 밖 + 메모 이슈 + PM 배경) + Teams(EN) + 카톡(KR). Step 5.5: SRS-impact 의심 항목 감지 → §6에 권장 (자동 chain X) |
 | 개발팀에 전달 | `/dev-chat` | 영어 Teams 메시지 (Light: 클라 원문→`Client ...` 중계 / 내부 메모→직접 번역 / Standard: 브리프) |
 | 고객에게 전달 | `/client-chat` | 한국어 카톡 메시지 |
-| 진행 중 변경 요청 / 큰 요청 / 스펙화 | `/to-spec` | 4-bucket triage gate (In-Round/Next-Round/Out-of-Scope/Confirm-Needed) → In-Round만 PM confirm 후 Notion 스펙 + 태스크 DB 자동 생성 |
+| 진행 중 변경 요청 / 큰 요청 / 스펙화 | `/to-spec` | 4-bucket triage gate (In-Round/Next-Round/Out-of-Scope/Confirm-Needed) → In-Round만 PM confirm 후 Notion 스펙 + 태스크 + **SRS 본문 patch + Change Log entry** 자동 생성 (SRS Living Doc canonical writer). PM Confirm Gate 4지선다 (전체 진행 / SRS skip / 수정 / 취소) |
 | QA 플랜 작성 | `/qa-plan` | 프로젝트 전체 QA 9-section 플랜 (로컬, gitignored, **출력 영어**) — Scope / Roles·Accounts / Flow / P0·P1·EDGE·REG / Handoff Message / Review. v1.1: `--url <staging>` 명시 시 read-only guided navigation으로 화면 cross-check (depth 2 / max 10 pages). `--login-as <mock_account>` 동반 시 자동 로그인 1회 예외 (admin 페이지 inspect 가능). **v1.1.1**: Source Coverage block + Confidence 라벨 의무 출력. SRS missing AND URL inspect missing → §4–§7 작성 차단 (Draft only). URL inspect = implementation evidence only (SRS 외 신규 surface는 §9 SRS-Implementation Deviation으로 라우팅) |
 | 검수 요청 | `/qa-request` | 카톡 검수 요청 메시지 |
-| QA 피드백 전달 | `/qa-feedback` | 내부 Tasks DB 영문 티켓 |
+| QA 양방향 동기화 | `/qa-update` | 고객 "대기중" → 내부 영문 티켓 (intake) + 내부 "Ready for QA" → 고객 "검수요청/재검수요청" (review-sync). 단일 confirm gate, URL 매칭만 |
 | 주간 보고 | `/weekly-report` | Notion 주간 리포트 |
-| SRS 번역 | `/srs-translate` | 영어 구조화 번역 (Notion) — 비창작 원칙, Inferred 섹션 없음 |
+| SRS 번역 | `/srs-translate` | 영어 구조화 번역 (Notion) — 비창작 원칙, Inferred 섹션 없음, 영문 본문 끝에 KR SRS Change Log pointer-stub 자동 추가 |
 | 킥오프 준비 | `/kickoff-prep` | 고객 안건(KR) + 내부 노트(EN) |
 | 이슈 티켓 | `/issue-ticket` | Linear 티켓 |
 | 데일리 스크럼 | `/daily-scrum` | Notion Daily Scrum Log + 영어 dev-chat Teams 전송 + PM 할 일 자동 PM Action Hub 등록 |
 | 내부 싱크 | `/sync-note` | 영어 Teams 메시지 |
 | 아침 브리핑 | `/today-brief` | 오늘 할 일 + Google Calendar 미팅 요약 |
 | 할 일 추가 | `/todo` | PM Action Hub DB |
-| SRS 초안 생성 | `/create-srs` | 한국어 SRS/기능명세 초안 (Notion) |
+| SRS 초안 생성 | `/create-srs` | 한국어 SRS/기능명세 초안 (Notion) — 본문 마지막에 `## Change Log` v1 seed entry 자동 추가 (Living Doc seed) |
 | Nexus 일별 기록 | `/nexus-daily` | Nexus OS row별 hours/memo 자동 입력 |
 | 새 프로젝트 | `/new-project` | 로컬 파일 + Notion 뷰 자동 생성 |
 | 워크스페이스 세팅 | `/setup-workspace` | Notion DB 5개 + 허브 페이지 + ID 교체 자동 (최초 1회) |
@@ -82,9 +82,9 @@ CLAUDE.md (전체 규칙)           → 항상 자동 로드
 
 | DB | 용도 | 사용 스킬 |
 |---|---|---|
-| 프로젝트 문서 | SRS, 킥오프, 핸드오프 | `/srs-translate`, `/kickoff-prep` |
+| 프로젝트 문서 | SRS (Living Doc), 킥오프, 핸드오프 | `/create-srs`, `/srs-translate`, `/to-spec` (canonical SRS writer), `/kickoff-prep` |
 | 커뮤니케이션 | 미팅노트, 주간리포트, 스펙 | `/meeting-note`, `/weekly-report`, `/to-spec` |
-| 태스크 | 개발팀 구현 태스크 (스펙 출처 relation으로 스펙 페이지와 연결) | `/to-spec`, `/qa-feedback` |
+| 태스크 | 개발팀 구현 태스크 (스펙 출처 relation으로 스펙 페이지와 연결) | `/to-spec`, `/qa-update` |
 | Daily Scrum Log | 프로젝트별 일일 체크인 | `/daily-scrum` |
 | PM Action Hub | PM 운영 액션 (투두) | `/todo`, `/today-brief` |
 
@@ -106,9 +106,13 @@ CLAUDE.md (전체 규칙)           → 항상 자동 로드
   → 여러 소스 → 한국어 SRS/기능명세 초안
   → /srs-translate, /kickoff-prep의 upstream
 
-/to-spec = 진행 중 변경 요청 + 큰 요청 + 스펙화 단일 진입점 (in-flight delta)
+/to-spec = 진행 중 변경 요청 + 큰 요청 + 스펙화 단일 진입점 + **SRS Living Doc canonical writer**
   → 4-bucket triage gate (In-Round / Next-Round / Out-of-Scope / Confirm-Needed)
-  → In-Round 항목 → PM Confirm Gate → Notion 스펙 페이지 + 태스크 DB 자동 생성
+  → In-Round 항목 → PM Confirm Gate 4지선다 (1 전체 진행 / 2 SRS skip / 3 수정 / 4 취소)
+  → gate=1: 스펙 + 태스크 + SRS 본문 patch + Change Log entry 4가지 동시 생성
+  → gate=2: 스펙·태스크만 (SRS escape hatch, drift 경고)
+  → REQ ID 매칭 1순위 / 도메인 fallback 2순위 / 신규 그룹 3순위
+  → srs_ref: missing이면 Part E auto-skip + §9 warning (스펙·태스크는 생성)
   → Next-Round / Out-of-Scope / Confirm-Needed → 로컬 markdown만 (Notion auto-write X)
   → 구 /change-brief는 본 스킬로 흡수 (deprecated)
 
@@ -119,7 +123,7 @@ CLAUDE.md (전체 규칙)           → 항상 자동 로드
     (같은 도메인 / depth 2 / max 10 pages / destructive click 금지)
   → v1.1.1 Source Coverage gate: SRS missing AND URL inspect missing → §4–§7 blocked (Confidence: Draft only)
     URL inspect = implementation evidence only — SRS 외 신규 surface는 §9 SRS-Implementation Deviation
-  → 검수 후 PM이 /qa-feedback에 "QA Plan: QA-..." 또는 "Scenario: P0-NN" 메타 보존 (수동)
+  → 검수 후 PM이 /qa-update intake에 "QA Plan: QA-..." 또는 "Scenario: P0-NN" 메타 보존 (수동)
   → design.md는 §3 화면명 인용 보조만, primary source X
 
 /today-brief = 아침 브리핑
@@ -131,8 +135,10 @@ CLAUDE.md (전체 규칙)           → 항상 자동 로드
   → 프로젝트/시간/메모 생성 → Nexus row별 저장
   → 계층형 매칭 + alias registry (.claude/nexus-alias.md)
 
-/qa-feedback = 고객 QA DB → 내부 티켓
-  → 고객 피드백 읽기 → 번역 + 분류 → 내부 Tasks DB 생성
+/qa-update = 양방향 QA 상태 동기화 (단일 confirm gate)
+  → Mode 1 (intake): 고객 "대기중" → 영문 티켓 내부 DB 생성 + 고객 row "진행중"
+  → Mode 2 (review-sync): 내부 "Ready for QA" → 고객 "검수요청"/"재검수요청" (URL 매칭만)
+  → 양방향 한 번에 미리보기 → PM 1 누르면 batch 적용
 ```
 
 ## 설계 원칙
@@ -147,7 +153,8 @@ CLAUDE.md (전체 규칙)           → 항상 자동 로드
 - **중복 방지 (멱등성)** — 같은 주차/날짜/URL/제목 기준 중복 페이지 생성 차단. 덮어쓰기는 반드시 사용자 확인 후에만
 - **보수적 자동화** — `--client` 자동 default는 24h 활동 기준 1개일 때만 + 명시 통보. `/todo` 프로젝트 자동 확정은 Notion select 옵션과 exact match일 때만
 - **확인 프롬프트 표준** — 3~4지 선택지 + "추천: N" 명시 + 한 번에 하나의 확인 포인트만
-- **Nexus PM Agent와 역할 경계** — 사내 공식 PM 에이전트가 sales→SRS→design.md→wireframe→handoff까지 Official source-of-truth 담당. 이 워크스페이스는 in-flight delta 레이어 (진행 중 변경 처리, QA, 운영 자동화). PM 산출물은 항상 `Draft / PM Review / Dev-Handoff` 라벨, **Official 산출물 생성·편집 금지**. Nexus MCP는 현재 메타데이터(project/task/contract) read만 가능, 문서 콘텐츠(SRS / design.md / 녹음) read 불가 → 그런 입력은 로컬·Notion에서 받는다.
+- **Nexus PM Agent와 역할 경계** — 사내 공식 PM 에이전트가 sales→contract→kickoff→design.md→wireframe→handoff까지 Official source-of-truth 담당. **SRS는 2026-05-21부터 PM workspace canonical (living doc)** — `/to-spec` In-Round bucket이 writer. design.md / wireframe만 Nexus 영역 유지. PM 비-SRS 산출물은 항상 `Draft / PM Review / Dev-Handoff` 라벨, design.md / wireframe 생성·편집 금지. Nexus MCP는 현재 메타데이터(project/task/contract) read만 가능, 문서 콘텐츠(design.md / 녹음) read 불가 → 그런 입력은 로컬·Notion에서 받는다.
+- **SRS Living Document** — `/to-spec` In-Round bucket(gate=1)이 canonical writer로 SRS 본문 patch + 페이지 끝 `## Change Log`에 entry append. Append-only 불변식 (기존 entry 수정·삭제 X). 한국어 SRS canonical, 영문은 pointer-stub. PM Confirm Gate 4지선다 — gate=2(SRS skip) escape hatch는 drift 위험. `/meeting-note` Step 5.5와 자유 채팅 reflex는 감지만(자동 chain X).
 - **Hard-fail 최소화** — 외부 의존성(SRS, design.md) 부재 시 스킬 전체 실패 대신 partial-skip (해당 섹션만 "확인 필요"). Notion URL fetch 실패 시 free-text fallback.
 - **자동 chain 금지** — 신규 스킬은 다음 스킬을 자동 트리거하지 않음. "다음 단계" 안내만 출력. PM 수동 게이트.
 - **AI 공수 산정 금지** — 구체 수치(MD/hour/day) 임의 산정 금지, Impact 레벨만(Low/Medium/High/Unknown).
@@ -192,7 +199,8 @@ Track B 회귀 테스트 framework이 도입됐습니다 (Wave 0 ~ Wave 1-D + 2-
 |---|---|---|---|
 | qa-plan | 17 | weekly-report | 6 |
 | to-spec | 9 | meeting-note | 7 |
-| change-brief (deprecated) | 8 | qa-feedback | 8 |
+| change-brief (deprecated) | 8 | qa-feedback (deprecated) | 8 |
+| qa-update | TBD | | |
 | daily-scrum | 8 | srs-translate | 6 |
 | create-srs | 6 | issue-ticket | 5 |
 | kickoff-prep | 5 | nexus-daily | 5 |

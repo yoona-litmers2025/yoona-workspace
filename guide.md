@@ -26,7 +26,7 @@ SRS 번역          → /srs-translate
 내부 싱크 미팅     → /sync-note
 오늘 뭐하지?      → /today-brief
 할 일 추가        → /todo
-QA 피드백 전달     → /qa-feedback
+QA 양방향 동기화   → /qa-update
 SRS 초안 생성      → /create-srs
 Nexus 일별 기록    → /nexus-daily
 ```
@@ -51,18 +51,18 @@ Nexus 일별 기록    → /nexus-daily
 |---|---|
 | `/setup-workspace` | 워크스페이스 초기 세팅 — Notion DB 5개 + 허브 페이지 + ID 교체 (최초 1회) |
 | `/new-project` | 새 프로젝트 셋업 — 로컬 파일 + Notion 뷰 + Project management |
-| `/create-srs` | 여러 소스 → 한국어 SRS/기능명세 초안 (Notion 프로젝트 문서 DB) |
-| `/srs-translate` | 한국어 SRS → 영어 구조화 번역 (Notion) |
+| `/create-srs` | 여러 소스 → 한국어 SRS/기능명세 초안 (Notion 프로젝트 문서 DB) + SRS 본문 끝에 `## Change Log` v1 seed entry 자동 추가 |
+| `/srs-translate` | 한국어 SRS → 영어 구조화 번역 (Notion) — 영문 본문 끝에 `## Change Log` pointer-stub (KR canonical 가리킴) |
 | `/kickoff-prep` | 킥오프 미팅 안건(KR) + 내부 노트(EN) 2페이지 |
-| `/meeting-note` | 미팅 녹취/메모 → Notion 미팅노트 + Teams + 카톡 한번에 |
+| `/meeting-note` | 미팅 녹취/메모 → Notion 미팅노트 + Teams + 카톡 한번에. Step 5.5: 확정사항·바로 진행할 일에서 SRS-impact 의심 항목 감지 → §6에 권장 prompt (자동 chain X) |
 | `/dev-chat` | 고객 요청/미팅 결과 → 영어 Teams 메시지 (Light/Standard 자동) |
 | `/client-chat` | 개발팀 메시지 → 한국어 카톡 메시지 (질문/업데이트 자동 감지) |
 | `/sync-note` | 내부 sync 미팅 → 개발팀 Teams 메시지 |
-| `/to-spec` | 클라이언트 요청 4-bucket triage gate (In-Round/Next-Round/Out-of-Scope/Confirm-Needed) → In-Round만 PM confirm 후 Notion 스펙 + 태스크 DB 자동 생성 |
+| `/to-spec` | 클라이언트 요청 4-bucket triage gate (In-Round/Next-Round/Out-of-Scope/Confirm-Needed) → In-Round만 PM confirm 후 Notion 스펙 + 태스크 DB + **SRS 본문 patch + Change Log entry** 자동 생성. **SRS Living Document canonical writer** — REQ ID 1순위 / 도메인 fallback 2순위 / 신규 그룹 3순위 매칭. PM Confirm Gate 4지선다 (전체 진행 / SRS skip / 수정 / 취소). `srs_ref: missing` → Part E auto-skip + §9 warning |
 | `/change-brief` | (deprecated — `/to-spec`으로 흡수됨, 1-2주 후 제거 예정) |
 | `/qa-plan` | 프로젝트 전체 QA 9-section 플랜 (Scope·Roles·Flow·P0/P1/EDGE/REG·Handoff·Review) — 영어 출력, 자동 git ignored. v1.1: `--url <staging>` 시 read-only guided navigation (depth 2 / max 10), `--login-as <mock>` 동반 시 자동 로그인 1회 예외 (admin inspect). v1.1.1: Source Coverage block + Confidence 라벨 의무 출력. SRS missing AND URL inspect missing → §4–§7 작성 차단 (Draft only). URL inspect = implementation evidence only (SRS 외 신규 surface는 §9 SRS-Implementation Deviation으로 라우팅) |
 | `/qa-request` | 검수 요청 카톡 메시지 (web/admin/apk/program/testflight 자동 감지) |
-| `/qa-feedback` | 고객 QA DB → 내부 Tasks DB 영문 티켓 (번역+분류) |
+| `/qa-update` | 양방향 QA 상태 동기화 — 고객 "대기중" → 내부 영문 티켓 (intake) + 내부 "Ready for QA" → 고객 "검수요청"/"재검수요청" (review-sync). 단일 confirm gate, URL 매칭만. `/qa-feedback` 흡수 (deprecated) |
 | `/issue-ticket` | Linear 이슈 티켓 (한/영 입력) |
 | `/daily-scrum` | 프로젝트별 daily check-in → Notion + 영어 dev-chat Teams + PM 할 일 자동으로 PM Action Hub 등록 |
 | `/today-brief` | 아침 브리핑 — PM Action Hub + Google Calendar |
@@ -108,9 +108,16 @@ SRS 받음 (한국어)
 클라/미팅/QA 피드백 (scope·design 영향 가능성)
   ↓ /to-spec --client <name> [요청 내용 또는 Notion URL]
 4-bucket triage (In-Round / Next-Round / Out-of-Scope / Confirm-Needed)
-  ↓ In-Round 항목 → PM Confirm Gate (1 진행 / 2 수정 / 3 취소)
-PM 진행 선택 시
-  ↓ Notion 스펙 페이지 + 태스크 DB 자동 생성 + linked view 수동 안내
+  ↓ In-Round 항목 → PM Confirm Gate 4지선다
+     1. 전체 진행 (스펙 + 태스크 + SRS 본문 patch + Change Log entry) — 권장
+     2. SRS 본문·Change Log skip (스펙·태스크만) — escape hatch, drift 위험
+     3. 수정 (4-bucket 분류 재검토)
+     4. 취소
+PM 옵션 1 선택 시
+  ↓ Notion 스펙 + 태스크 + SRS 본문 patch + Change Log entry 4가지 동시 생성
+  ↓ srs_ref: missing이면 Part E auto-skip + §9 warning (스펙·태스크는 생성됨)
+PM 옵션 2 선택 시
+  ↓ 스펙·태스크만 생성, SRS 본문·Change Log unchanged + §9 drift warning
 Confirm-Needed 항목
   ↓ §5 → /client-chat 별도 실행
 Out-of-Scope 항목
@@ -120,6 +127,7 @@ Next-Round 항목
 ```
 
 > 구 `/change-brief`는 `/to-spec`으로 흡수됨 (deprecated, 1-2주 후 제거 예정).
+> SRS Living Document 정책 상세는 아래 [SRS Living Document](#srs-living-document) 섹션 참조.
 
 ### 4. QA 라운드
 
@@ -129,9 +137,11 @@ SRS / Change Brief In-Round / QA history / 클라 컨텍스트 기준 전체 QA 
     v1.1.1 gate: SRS missing AND URL inspect missing → §4–§7 blocked (Confidence: Draft only), source 요청만 출력
 검수 시작 안내 (고객 카톡)
   ↓ /qa-request
-고객 QA 피드백 들어옴
-  ↓ /qa-feedback (번역+분류 → 내부 Tasks DB)
-  ↓ 본문 첫 줄에 "시나리오 ID: SCN-..." 메타 보존 (수동)
+고객 QA 피드백 들어옴 + 내부 dev fix 완료
+  ↓ /qa-update <project> (한 호출로 양방향 동기화)
+  ↓ Mode 1 (intake): 고객 "대기중" → 영문 티켓 내부 DB + 고객 row "진행중"
+  ↓ Mode 2 (review-sync): 내부 "Ready for QA" → 고객 "검수요청"/"재검수요청" (URL 매칭)
+  ↓ Description에 "시나리오 ID: SCN-..." 메타 보존 (수동)
 정식 티켓이 필요한 큰 버그
   ↓ /issue-ticket → Linear
 ```
@@ -164,12 +174,70 @@ SRS / Change Brief In-Round / QA history / 클라 컨텍스트 기준 전체 QA 
 
 **모든 신규 in-flight delta 스킬에 적용되는 invariant:**
 
-- **Official 산출물 생성·편집 금지** (Nexus PM Agent 영역) — Draft / PM Review / Dev-Handoff 라벨 산출물만 생성 가능
+- **design.md / wireframe 생성·편집 금지** (Nexus PM Agent 영역) — Draft / PM Review / Dev-Handoff 라벨 산출물만 생성 가능
+- **SRS는 living document** — `/to-spec` In-Round bucket(gate=1)이 canonical writer로 SRS 본문 patch + Change Log entry append. `/create-srs`·`/srs-translate`는 seed writer. `/meeting-note` Step 5.5와 자유 채팅 reflex는 감지만, 자동 chain X
+- **Change Log = append-only** — 기존 entry 수정·삭제 절대 금지
 - **Hard-fail 최소화** — 외부 의존(SRS, design.md) 부재 시 partial-skip (해당 섹션만 "확인 필요")
 - **자동 chain 트리거 금지** — 다음 단계는 안내만, PM 수동 게이트
 - **AI 공수 산정 금지** — 구체 MD/hour/day 임의 산정 X, Impact / priority 레벨만
-- **Nexus MCP는 메타데이터 only** — SRS / design.md / 녹음 / transcript은 Nexus MCP로 read 불가, 로컬·Notion에서 받음
+- **Nexus MCP는 메타데이터 only** — design.md / 녹음 / transcript은 Nexus MCP로 read 불가, 로컬·Notion에서 받음
 - **추측성 UI 위치 자동 제안 금지** — source(SRS/design.md/Change Brief) 근거 없으면 `[확인 필요]`
+
+---
+
+## SRS Living Document
+
+SRS는 PM workspace의 living document. 초기 SRS 이후 변경(카톡 / 미팅 / QA 피드백 / 자유 채팅)이 모두 단일 진입점(`/to-spec`)을 통과해 SRS 본문 + Change Log에 누적된다.
+
+### Writer Matrix
+
+| Path | SRS 본문 수정 | Change Log entry | PM gate |
+|---|---|---|---|
+| `/to-spec` In-Round (gate=1) | YES (canonical writer) | YES | 통합 gate 1회 |
+| `/to-spec` In-Round (gate=2) | NO (escape hatch) | NO | 통합 gate |
+| `/meeting-note` Step 5.5 | NO (감지·권장만) | NO | — |
+| 자유 채팅 reflex | NO (권장만) | NO | — |
+| `/create-srs` | YES (v1 seed) | YES (v1 entry) | 기존 미리보기 gate |
+| `/srs-translate` | YES (영문 v1) | YES (pointer-stub) | 기존 중복 감지 gate |
+
+### Matching Algorithm
+
+1. **REQ ID 매칭** (1순위): In-Round 항목이 `REQ-<도메인>-<번호>` 명시 → 섹션 6 해당 REQ 직하단 in-place 갱신
+2. **섹션 헤더 fallback** (2순위): REQ 없음 + 도메인 코드 명시 → 섹션 6 해당 그룹 끝에 신규 REQ 자동 채번
+3. **신규 그룹 fallback** (3순위): 둘 다 실패 → 섹션 6 끝 "신규 (분류 미정)" + `[확인 필요]` 인라인 태그
+
+### Change Log Entry 포맷 (append-only)
+
+```
+- YYYY-MM-DD [/to-spec] <REQ ID 또는 섹션> — <1줄 diff 요약>
+  Source: <Part A 스펙 페이지 URL>
+  Trigger: <client request / 미팅 결정 / QA 피드백>
+```
+
+기존 entry 수정·삭제 절대 금지. 잘못 적었으면 정정 entry 새로 추가.
+
+### 한국어 vs 영문 SRS
+
+- **한국어 SRS = canonical** (모든 변경의 진실)
+- **영문 SRS = pointer-stub sync** — 본문 자체 번역은 PM이 별도 `/srs-translate --mode=update` 호출. Change Log entry는 1줄 pointer만 (예: `- YYYY-MM-DD [/to-spec via KR-SRS] REQ-X updated — see KR SRS Change Log for diff`)
+
+### SRS 페이지 부재 처리 (`srs_ref: missing`)
+
+- Part E 자동 skip (hard-fail 금지)
+- 스펙·태스크는 계속 생성
+- §9에 `[확인 필요] SRS 미연결 — /create-srs 또는 PM 수동 연결 권장` 명시
+- `srs_update_count: 0` / `changelog_entries_added: 0` frontmatter 기록
+
+### 자유 채팅 Reflex
+
+사용자 발화가 다음 패턴을 모두 만족하면 "💡 SRS 영향 가능성 — /to-spec 권장" 1줄 prompt 출력 (자동 실행 X).
+
+조건 (AND):
+1. 주체 명시: "고객", "클라이언트", "<클라이언트명>", "미팅에서", "PM이"
+2. 변경 의도: "추가|변경|삭제|수정|해달라|원함|요청|결정"
+3. 명확한 기능·범위 — 단순 톤·문구 / 일정 합의 제외
+
+False-positive 방지: "그냥 메모", "비공식", "공식 아님" 명시되면 skip. 의문문 단독은 권장 X. PM이 "패스" 응답 시 silenced.
 
 ---
 
@@ -195,7 +263,8 @@ SRS / Change Brief In-Round / QA history / 클라 컨텍스트 기준 전체 QA 
 | `meeting-note` | 회의명 + 날짜 + 클라 | archive + 재생성 또는 중복 허용 |
 | `srs-translate` | 프로젝트 + 유형 + 언어(KR→EN) | archive + 재생성 또는 v2 생성 |
 | `todo` | 제목 + 프로젝트 + 작성일 | skip + 알림 |
-| `qa-feedback` | 원본 QA URL | skip + 알림 (덮어쓰기 금지) |
+| `qa-update` (intake) | 원본 client QA URL (Description `[source: <URL>]` 태그) | skip + 알림 (덮어쓰기 금지) |
+| `qa-update` (review-sync) | internal source URL → client row 매칭, client `완료` 보호 | 종료 상태 client row 변경 금지 |
 | `nexus-daily` | 날짜 + 태스크 ID | 이미 upsert 구조 (미리보기에 "(덮어씀)" 표시) |
 
 공통 안전장치: archive 실패 시 생성 중단 / 자동 archive 금지 / 2건+ 중복 시 가장 최근 1건만 대상.
@@ -284,7 +353,8 @@ yoona-workspace/
     ├── sync-note.md
     ├── today-brief.md
     ├── todo.md
-    ├── qa-feedback.md
+    ├── qa-update.md
+    ├── qa-feedback.md (deprecated)
     ├── create-srs.md
     ├── nexus-daily.md
     └── setup-workspace.md
