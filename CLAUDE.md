@@ -14,10 +14,37 @@ Most projects follow this sequence. Be aware of which phase we are in.
 4. **Planning Confirmation** → if needed, confirm scope/plan with client (Korean)
 5. **Design Confirmation** → if needed, confirm design with client (Korean)
 6. **Final Handoff** → package confirmed specs into English for dev and design teams
-7. **In-Flight Change Handling** → 진행 중 클라이언트 추가 요구 / 미팅 결정 / QA 피드백이 scope·design 영향 가능성 있으면 `/to-spec`(4-bucket triage gate 내장)으로 In-Round / Next-Round / Out-of-Scope / Confirm-Needed 분류 후, In-Round 항목만 PM confirm gate 통과 시 Notion 스펙·태스크 자동 생성. Official SRS / design.md는 편집하지 않음 (Nexus Agent / design owner 영역). `/change-brief`는 `/to-spec`으로 흡수됨 (deprecate 진행 중).
+7. **In-Flight Change Handling** → 진행 중 클라이언트 추가 요구 / 미팅 결정 / QA 피드백이 scope·design 영향 가능성 있으면 `/to-spec`(4-bucket triage gate 내장)으로 In-Round / Next-Round / Out-of-Scope / Confirm-Needed 분류 후, In-Round 항목만 PM confirm gate 통과 시 Notion 스펙·태스크 + **SRS 본문 patch + Change Log entry** 자동 생성 (gate 옵션 1). **SRS는 PM workspace의 living document — `/to-spec`이 canonical writer**. design.md / wireframe은 편집하지 않음 (Nexus Agent / design owner 영역). `/change-brief`는 `/to-spec`으로 흡수됨 (deprecate 진행 중).
 8. **Ongoing Ops** → routine updates, tickets (post-triage), weekly reports, daily scrum, ad-hoc requests
 
-> Phases 1–3과 Official SRS / design.md / wireframe 작성은 사내 **Nexus PM Agent** 영역. 이 워크스페이스는 Draft / PM Review / Dev-Handoff 라벨 산출물만 다룬다. Nexus MCP는 현재 project / task / contract 메타데이터만 노출하고, SRS / design.md / 녹음 / transcript 같은 문서 콘텐츠는 read 불가 — 그런 입력은 로컬 파일 또는 Notion에서 받는다.
+> Phases 1–3 중 **design.md / wireframe**은 사내 **Nexus PM Agent** 영역. **SRS는 PM workspace에서 living doc으로 운영** (한국어 SRS canonical, 영문은 `/srs-translate` pointer-stub sync). 본 워크스페이스는 Draft / PM Review / Dev-Handoff 산출물 + SRS Living Document를 관리한다. Nexus MCP는 현재 project / task / contract 메타데이터만 노출하고, design.md / 녹음 / transcript 같은 문서 콘텐츠는 read 불가 — 그런 입력은 로컬 파일 또는 Notion에서 받는다.
+
+## SRS Living Document
+- **Canonical writer**: `/to-spec` In-Round bucket (gate 옵션 1) — REQ ID 매칭(1순위) / 섹션 헤더 fallback(2순위) / 신규 그룹 fallback(3순위)로 SRS 본문 patch + 페이지 끝 `## Change Log`에 entry append
+- **Seed writer**: `/create-srs` (v1 초안), `/srs-translate` (영문 v1 + 이후 pointer-stub)
+- **Impact detection (감지만, write X)**: `/meeting-note` Step 5.5 + 자유 채팅 reflex (아래 참조)
+- **Change Log = append-only** — 기존 entry 수정·삭제 절대 금지. 잘못 적었으면 정정 entry 새로 추가.
+- **한국어 SRS = canonical**, 영문 SRS는 KR Change Log를 가리키는 pointer-stub만 (`/srs-translate --mode=update`로 별도 sync)
+- **PM Confirm Gate 4지선다**: 1 전체 진행 / 2 SRS 본문·Change Log skip (escape hatch) / 3 수정 / 4 취소. gate=1만 SRS write 실행.
+- **srs_ref: missing** → Part E 자동 skip + §9 warning, hard-fail 금지
+
+## SRS Living Document Reflex (자유 채팅)
+
+채팅 중 사용자 발화가 다음 패턴을 모두 만족하면 "SRS 영향 가능성 — /to-spec 권장" 1줄 prompt 출력 (자동 실행 ❌):
+
+조건 (AND):
+1. 주체 명시: "고객", "클라이언트", "<클라이언트명>", "미팅에서", "PM이"
+2. 변경 의도: "추가|변경|삭제|수정|해달라|원함|요청|결정"
+3. 명확한 기능·범위 — 단순 톤·문구 수정 / 일정 합의는 제외
+
+False-positive 방지:
+- "그냥 메모", "비공식", "공식 아님" 명시되면 skip
+- 의문문 단독 ("이거 추가해야 할까요?") → 권장 X (PM이 결정 후 호출)
+
+출력 (한 줄):
+> 💡 SRS 영향 가능성 — /to-spec 으로 triage 권장 (자동 실행 안 함)
+
+PM이 "패스 / 그냥 메모" 응답 시 즉시 silenced. 같은 세션 내 동일 주제 반복 prompt 금지.
 
 ## Critical Rule: Ambiguity Handling
 **NEVER resolve ambiguity silently.** When the Korean source is:
@@ -193,12 +220,13 @@ All document outputs go to Notion, not local files. Local workspace is for templ
 
 참조 구현: `/qa-plan` v1.1.2 §"Source 우선순위 (중요)" + `/to-spec` v2 §"Source 우선순위".
 
-### Write Permission Inventory (2026-05-10)
+### Write Permission Inventory (2026-05-18)
 
 | Skill | Write destination | Risk |
 |---|---|---|
 | /to-spec | Notion 스펙+태스크 (In-Round only) | Critical |
-| /qa-feedback | Notion 내부 Tasks DB + 고객 QA DB Status | Critical |
+| /qa-update | Notion 내부 Tasks DB (Mode 1) + 고객 QA DB Status (Mode 1·2) | Critical |
+| /qa-feedback | **[DEPRECATED — /qa-update Mode=intake로 흡수]** Notion 내부 Tasks DB + 고객 QA DB Status | Critical |
 | /srs-translate | Notion 프로젝트 문서 DB | Critical |
 | /create-srs | Notion 프로젝트 문서 DB | Critical |
 | /weekly-report | Notion 커뮤니케이션 DB | Critical |
