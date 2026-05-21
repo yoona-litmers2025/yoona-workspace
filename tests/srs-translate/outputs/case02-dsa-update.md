@@ -62,6 +62,12 @@ glossary_terms_used: 8
 ### 3.3 Permission Boundary Validation
 ### 3.4 Audit Log (new in R2)
 ## 4. Non-functional Requirements
+
+## Change Log
+> KR SRS is canonical. This English doc tracks updates via pointer-stubs.
+
+- 2026-05-10 [/srs-translate] v1 generated from KR SRS — notion://mock-dsa-srs-r2
+- 2026-05-10 [/to-spec via KR-SRS] §3.4 Audit Log added — see KR SRS Change Log for diff
 ```
 
 ## 6. New Terms

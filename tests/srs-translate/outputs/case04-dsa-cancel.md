@@ -58,3 +58,4 @@ glossary_terms_used: 0
 - gate_choice="3" — full cancellation. 어떤 외부 write도 발생 X.
 - 기존 R1 EN 페이지 보존. 새 페이지 미생성.
 - PM이 다음 라운드에 다시 invoke해서 처리.
+- Change Log stub: 미생성 — translation 미실행, EN 본문 자체가 만들어지지 않음. 기존 R1 EN의 Change Log는 unchanged.

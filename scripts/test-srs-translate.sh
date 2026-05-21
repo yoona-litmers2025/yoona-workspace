@@ -11,7 +11,7 @@ cd "$(dirname "$0")/.."
 # shellcheck source=lib/harness-common.sh
 source "$(dirname "$0")/lib/harness-common.sh"
 
-CASES=(case01 case02 case03 case04 case05 case06)
+CASES=(case01 case02 case03 case04 case05 case06 case07)
 TESTS_DIR="tests/srs-translate"
 OUTPUTS_DIR="$TESTS_DIR/outputs"
 CHECKS_DIR="$TESTS_DIR/checks"

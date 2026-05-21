@@ -115,3 +115,10 @@ Notion 프로젝트 문서 DB에 저장할까요?
 - output_mode="excerpt" — REQ 18건이 16건 임계 초과. 발췌 모드로 §1 / §3 / §5 / §7만 출력.
 - §2 배경 / §4 IA / §6 상세 기능명세는 본 출력에서 생략. 전문이 필요하면 PM이 별도 명시.
 - 비창작 원칙 준수 — 모든 18건 REQ는 소스 메모에 직접 명시된 항목.
+
+## 9. Change Log
+
+(SRS 본문 마지막 섹션 — Notion 페이지에 동일 본문 저장됨. 발췌 모드라도 Change Log는 항상 포함. append-only.)
+
+- 2026-05-10 [/create-srs] v1 초안 생성
+  Source: text inline (대형 SRS 메모)

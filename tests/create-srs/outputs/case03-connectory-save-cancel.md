@@ -89,3 +89,10 @@ Notion 프로젝트 문서 DB에 저장할까요?
 - save_gate_choice="3" — Notion 저장 미실행. new_page_url 비어 있음.
 - §5 SRS draft 본문은 정상 생성됐으므로, PM이 추후 별도 invoke해서 동일 입력으로 다시 진행하거나 save_gate_choice="1"로 직접 저장 가능.
 - 비창작 원칙 준수.
+
+## 9. Change Log
+
+(SRS draft 본문에는 포함되었으나 Notion 미저장 — save_gate_choice=3. 추후 save 시 동일 entry로 시드됨.)
+
+- 2026-05-10 [/create-srs] v1 초안 생성
+  Source: text inline (B2B SaaS 메모)

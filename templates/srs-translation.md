@@ -63,11 +63,19 @@ Include on first translation for a new client, or when new domain terms appear:
 | Korean | English (used in this doc) | Confidence | Notes |
 |--------|---------------------------|------------|-------|
 | [term] | [translation] | High/Medium/Low | [why low confidence, if applicable] |
+
+## Change Log
+> KR SRS is canonical. This English doc tracks updates via pointer-stubs.
+
+- [Date] [/srs-translate] v1 generated from KR SRS — [KR SRS Notion URL]
+(For every later KR SRS Change Log entry, add a 1-line pointer-stub here:
+  `- [Date] [/to-spec via KR-SRS] [REQ ID or section] updated — see KR SRS Change Log for diff`)
 ```
 
 ## Key Rules
 - Translate what the source says. Nothing more.
 - Section 5 (Ambiguities): only if genuinely unclear in the source — zero ambiguities is fine.
 - Section 6 (New Terms): include on first client translation or when new terms appear.
+- Change Log: always include with at least the v1 generation pointer-stub. Never translate KR Change Log content — pointer-only.
 - No "Inferred Requirements" section — Claude does not speculate about implied requirements.
 - Mark the whole document as "Draft — pending PM review".

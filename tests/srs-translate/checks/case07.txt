@@ -1,0 +1,14 @@
+# case07: SRS Living Doc — EN Change Log pointer-stub seed 검증 (P1)
+must_match	^status: Confirmed-1$	status Confirmed-1
+must_match	^gate_choice: "0"$	no-match gate (fresh)
+must_match	^existing_match_count: 0$	no prior EN doc
+must_match	^new_page_url: https://notion\.so/	page URL recorded
+
+# Change Log stub (inside §5 Translation Output, EN body)
+must_match	## Change Log	change log section present in EN body
+must_match	\[/srs-translate\] v1 generated from KR SRS	v1 pointer-stub format
+must_match	KR SRS is canonical	canonical doc disclaimer line
+
+# v1 단계라 추가 entry 없음 (pointer-stub 1줄만)
+must_not_match	\[/to-spec via KR-SRS\]	no to-spec pointer-stub yet at v1
+must_not_match	see KR SRS Change Log for diff	no additional pointer-stub line yet

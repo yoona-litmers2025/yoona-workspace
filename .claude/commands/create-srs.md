@@ -92,6 +92,7 @@ allowed-tools: Read, Glob, Grep, mcp__notion-cigro__notion-create-pages, mcp__no
 6. 상세 기능명세
 7. 확인 필요 사항
 (8. 용어 정의 — 해당 시)
+9. Change Log (필수, v1 시드 entry 자동 추가)
 
 ### 기능 그룹
 | 그룹 | 도메인 코드 | REQ 개수 |
@@ -160,6 +161,17 @@ PM 응답 대기:
 - 없으면 섹션 자체 생략
 - 형식: `한국어 용어 | 영어 용어 | 비고`
 
+#### 섹션 9: Change Log (필수 — SRS Living Document seed)
+- SRS 페이지 본문의 마지막 섹션. append-only.
+- 이후 변경은 `/to-spec` In-Round bucket만 entry append (canonical writer)
+- v1 시드 entry 형식 (오늘 날짜 사용):
+  ```
+  ## Change Log
+  - YYYY-MM-DD [/create-srs] v1 초안 생성
+    Source: <source description — 입력 자료 1줄 요약>
+  ```
+- 신규 SRS는 entry 1건(v1 시드)만 가지고 시작. 빈 섹션 출력 금지.
+
 ### Step 5: 출력 (문서 길이 적응)
 
 | REQ 총 개수 | 출력 방식 |
@@ -211,3 +223,4 @@ Notion 프로젝트 문서 DB에 저장할까요?
 - **REQ 도메인 고정** — 기본 9개 코드 우선. 커스텀은 미리보기에서 PM 승인 후만
 - **한국어 출력** — SRS 본문은 한국어. 기술 용어는 영어 병기 허용 (예: "크레딧 차감 (Credit Deduction)")
 - **톤** — 합니다체(격식체). 명료하고 간결하게. 불필요한 수식 없이
+- **Change Log 필수** — 모든 SRS 본문은 `## Change Log` 섹션을 마지막에 포함 (v1 시드 entry 1건). append-only — 이후 `/to-spec`이 entry 추가, 본 스킬은 v1만 시드.

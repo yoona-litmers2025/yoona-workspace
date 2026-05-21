@@ -56,6 +56,11 @@ Koboom is an AI-driven worksheet generation service for children.
 - Free worksheet: fixed content on the index page.
 - Paid worksheet: 1 credit.
 - Promotion code expiry: 90 days after issuance.
+
+## Change Log
+> KR SRS is canonical. This English doc tracks updates via pointer-stubs.
+
+- 2026-05-10 [/srs-translate] v1 generated from KR SRS — text inline (Koboom KR SRS section, no Notion URL)
 ```
 
 ## 6. New Terms

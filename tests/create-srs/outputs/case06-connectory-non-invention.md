@@ -86,3 +86,10 @@ Notion 프로젝트 문서 DB에 저장할까요?
   - "회원 탈퇴" — 소스 미언급 → §7만.
 - `[추론]` 1건만 사용 — REQ-AUTH-04 세션 처리 (로그인 명시 → 세션은 직접 맥락상 필연).
 - 일반 부속 기능 추론(흔히 동반되는 fallback / verification / withdrawal 류)은 §8 메타 주석 외 본문에 절대 사용 X.
+
+## 9. Change Log
+
+(SRS 본문 마지막 섹션 — Notion 페이지에 동일 본문 저장됨. append-only.)
+
+- 2026-05-10 [/create-srs] v1 초안 생성
+  Source: text inline (의도적 좁은 입력 — 회원가입·로그인만 명시)

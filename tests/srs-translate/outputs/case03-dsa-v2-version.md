@@ -57,6 +57,11 @@ glossary_terms_used: 8
 ## 2. User Roles
 ## 3. Functional Requirements (restructured)
 ## 4. Non-functional Requirements
+
+## Change Log
+> KR SRS is canonical. This English doc tracks updates via pointer-stubs.
+
+- 2026-05-10 [/srs-translate] v1 generated from KR SRS — notion://mock-dsa-srs-experimental
 ```
 
 ## 6. New Terms

@@ -68,6 +68,11 @@ and manage Members.
 
 ## 4. Non-functional Requirements
 (translated as-is from source — no invention)
+
+## Change Log
+> KR SRS is canonical. This English doc tracks updates via pointer-stubs.
+
+- 2026-05-10 [/srs-translate] v1 generated from KR SRS — notion://mock-dsa-srs-r1
 ```
 
 ## 6. New Terms

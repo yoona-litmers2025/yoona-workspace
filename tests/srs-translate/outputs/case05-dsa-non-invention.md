@@ -48,6 +48,11 @@ glossary_terms_used: 0
 3.5.3 The frequency is adjusted so as not to be excessive.
 
 ## 3.6 Statistics (detailed scope to be confirmed in a separate meeting; 원문: "상세는 별도 회의에서 확정")
+
+## Change Log
+> KR SRS is canonical. This English doc tracks updates via pointer-stubs.
+
+- 2026-05-10 [/srs-translate] v1 generated from KR SRS — text inline snippet (no Notion URL — see source_ref)
 ```
 
 ## 6. New Terms

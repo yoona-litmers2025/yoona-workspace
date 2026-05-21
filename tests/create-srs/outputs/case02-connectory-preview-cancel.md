@@ -67,3 +67,7 @@ custom_domain_codes: []
 - preview_gate_choice="3" — PM이 입력 자료 부족 판단. SRS draft 작성 안 함, Notion 저장 안 함.
 - 확인 필요가 REQ보다 많으면 입력 자료 보강 후 재호출 권장 (이번 라운드 패턴).
 - 비창작 원칙 — 1줄 요청에서 임의 기능 확장 금지. AUTH 4 / PAY 4건 모두 명시 항목 한정.
+
+## 9. Change Log
+
+(미생성 — preview gate에서 PM이 취소 선택. SRS 본문 자체가 만들어지지 않았으므로 v1 시드 entry 없음. Notion 페이지 자체가 생성되지 않음.)

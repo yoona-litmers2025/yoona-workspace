@@ -1,0 +1,19 @@
+# case07: SRS Living Doc — Change Log v1 seed entry 검증 (P1)
+must_match	^status: Confirmed-1$	status Confirmed-1
+must_match	^preview_gate_choice: "1"$	preview gate 1
+must_match	^save_gate_choice: "1"$	save gate 1
+must_match	^req_total: 6$	6 REQs
+must_match	^output_mode: full$	full mode
+must_match	^new_page_url: https://notion\.so/	page URL recorded
+
+# Change Log seed entry (P1 핵심 검증)
+must_match_in_section	9. Change Log	\[/create-srs\] v1 초안 생성	v1 seed entry tag
+must_match_in_section	9. Change Log	Source: 	source line present
+must_match_in_section	9. Change Log	2026-05-	dated entry (YYYY-MM- prefix)
+
+# Change Log은 SRS 본문 마지막 섹션이며 다른 source skill entry는 v1 단계에 없음
+must_not_match_in_section	9. Change Log	\[/to-spec\]	no /to-spec entry yet at v1
+must_not_match_in_section	9. Change Log	\[/meeting-note\]	no /meeting-note entry yet at v1
+
+# v1 시드는 entry 1건만
+must_match_in_section	9. Change Log	v1 초안 생성	exactly v1 generation entry

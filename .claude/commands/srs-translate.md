@@ -32,6 +32,14 @@ allowed-tools: Read, Glob, Grep, mcp__notion-cigro__notion-create-pages, mcp__no
    - 용어집 기반으로 일관된 용어 사용
    - 충실한 번역 — 요구사항 추가/제거/재해석 금지
    - 소스 구조를 그대로 반영 — Claude가 구조를 재구성하거나 섹션을 임의로 추가하지 않음
+   - **Change Log pointer-stub 필수**: 영문 SRS 본문 마지막에 다음 형식 자동 추가 (KR SRS Change Log를 canonical로 가리키는 stub):
+     ```
+     ## Change Log
+     - YYYY-MM-DD [/srs-translate] v1 generated from KR SRS — <KR SRS Notion URL>
+     ```
+     - 한국어 SRS에 v1 외 추가 Change Log entry가 이미 있으면, 각 entry마다 1줄 pointer-stub 생성 (번역 X, 포인터만):
+       `- YYYY-MM-DD [/to-spec via KR-SRS] <REQ ID 또는 섹션> updated — see KR SRS Change Log for diff`
+     - 영문 본문 자체는 한국어 Change Log를 번역하지 않음. 진실은 KR SRS에 있음.
 6. **중복 체크 (C1 멱등성 가드)** — 저장 직전에 반드시 실행:
    - **Unique key**: 프로젝트 + 유형="SRS 번역" + 언어="KR→EN"
    - 프로젝트 문서 DB(`data_source_url: collection://bd33aae9-a894-82a9-b8e2-87387e7fbf47`)에서 `mcp__notion-cigro__notion-fetch`로 필터 조회:

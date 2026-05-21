@@ -105,3 +105,10 @@ Notion 프로젝트 문서 DB에 저장할까요?
 - `[추론]` 1건 (REQ-PAY-02 결제 검증) — 결제 기능 명시 → 검증 로직은 직접 맥락상 필연.
 - 발췌 모드 미적용 (REQ 11건, 15건 이하).
 - 커스텀 도메인 코드 미사용.
+
+## 9. Change Log
+
+(SRS 본문 마지막 섹션 — Notion 페이지에 동일 본문 저장됨. append-only.)
+
+- 2026-05-10 [/create-srs] v1 초안 생성
+  Source: text inline (기획 회의 메모, KR)

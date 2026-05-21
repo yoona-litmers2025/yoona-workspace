@@ -23,6 +23,7 @@ must_match	## 5\. SRS Draft	section 5
 must_match	## 6\. Step 6 Save Gate	section 6
 must_match	## 7\. Save Gate Choice	section 7
 must_match	## 8\. Notes	section 8
+must_match	## 9\. Change Log	section 9 (P1 SRS Living Doc seed)
 
 # No auto-chain triggers
 must_not_match	^Running /(qa-plan|issue-ticket|to-spec|client-chat|dev-chat|srs-translate)\b	no auto-chain
