@@ -28,23 +28,47 @@ Most projects follow this sequence. Be aware of which phase we are in.
 - **PM Confirm Gate 4지선다**: 1 전체 진행 / 2 SRS 본문·Change Log skip (escape hatch) / 3 수정 / 4 취소. gate=1만 SRS write 실행.
 - **srs_ref: missing** → Part E 자동 skip + §9 warning, hard-fail 금지
 
-## SRS Living Document Reflex (자유 채팅)
+## SRS Living Document Reflex (자유 채팅 / 카톡 paste)
 
-채팅 중 사용자 발화가 다음 패턴을 모두 만족하면 "SRS 영향 가능성 — /to-spec 권장" 1줄 prompt 출력 (자동 실행 ❌):
+채팅 중 사용자 발화 또는 카톡 메시지 paste가 다음 패턴을 만족하면 **mandatory 3-choice prompt** 출력 (1줄 권장이 아닌 명시 confirm 요구):
 
 조건 (AND):
 1. 주체 명시: "고객", "클라이언트", "<클라이언트명>", "미팅에서", "PM이"
 2. 변경 의도: "추가|변경|삭제|수정|해달라|원함|요청|결정"
 3. 명확한 기능·범위 — 단순 톤·문구 수정 / 일정 합의는 제외
 
+**카톡 paste 인식 패턴** (위 AND에 OR로 추가 — 둘 중 하나만 만족해도 trigger):
+- 발신자 이름 + 시각 표기 (예: `[오후 3:15] 홍길동:`)
+- 멀티라인 + "보내드려요 / 부탁드려요 / 가능할까요" 어조
+- 클라이언트 도메인 키워드 + 명확한 변경 요청
+
 False-positive 방지:
 - "그냥 메모", "비공식", "공식 아님" 명시되면 skip
-- 의문문 단독 ("이거 추가해야 할까요?") → 권장 X (PM이 결정 후 호출)
+- 의문문 단독 ("이거 추가해야 할까요?") → prompt X (PM이 결정 후 호출)
 
-출력 (한 줄):
-> 💡 SRS 영향 가능성 — /to-spec 으로 triage 권장 (자동 실행 안 함)
+출력 (mandatory 3-choice prompt):
+```
+💡 SRS-impact 가능성 감지
+- 항목: <자동 추출한 1줄 요약>
 
-PM이 "패스 / 그냥 메모" 응답 시 즉시 silenced. 같은 세션 내 동일 주제 반복 prompt 금지.
+지금 SRS 업데이트할까요?
+
+1. 지금 바로 — /to-spec 자동 호출 (PM Confirm Gate 4지선다는 /to-spec 안에서 통과)
+2. 나중에 — PM Action Hub에 follow-up 자동 등록 (/todo 자동 호출)
+3. 무시 — 본 발화 감지 무효 (false-positive 판단)
+
+추천: 1
+```
+
+**PM 선택 후 동작**:
+- **1 (지금 바로)**: 다음 턴에서 `/to-spec --client <추론된 client> "<항목 요약>"` 자동 호출. /to-spec의 4지선다 Confirm Gate는 정상 노출.
+- **2 (나중에)**: 다음 턴에서 `/todo [<project 또는 omit>] SRS-impact follow-up: <항목 요약>` 자동 호출. PM Action Hub에 누적.
+- **3 (무시)**: silenced. 같은 세션 내 동일 주제 반복 prompt 금지.
+
+**중요 안전장치**:
+- auto-invoke는 PM 선택 1/2를 받은 다음 턴에서 Skill tool로 실행. 본 reflex 룰은 prompt 출력만.
+- client 추론 실패 시 1 선택 후 `--client` 확인 질문이 /to-spec 안에서 발동 (정상 흐름).
+- 같은 세션에서 PM이 한 번 "3 무시" 응답한 주제는 silenced. PM이 "이거 SRS에 반영해줘"라고 명시적으로 reverse하면 다시 활성화.
 
 ## Critical Rule: Ambiguity Handling
 **NEVER resolve ambiguity silently.** When the Korean source is:

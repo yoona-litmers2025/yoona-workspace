@@ -1,18 +1,24 @@
-# case08: SRS-impact 의심 항목 감지 (P3 Step 5.5)
+# case08: SRS-impact 감지 + Mandatory Prompt (P6, 1=지금 바로)
 must_match	^status: Confirmed-1$	status Confirmed-1
 must_match	^gate_choice: "0"$	gate 0 (fresh)
 must_match	^action_items_count: 2$	2 action items
+must_match	^srs_impact_detected_count: 2$	2 SRS-impact items
+must_match	^pm_srs_prompt_choice: "1"$	PM chose 1 (right now)
 
-# §6 SRS-impact subsection present
-must_match	### SRS-impact 의심 항목	srs-impact subsection header
-must_match	자동 실행 안 함	auto-execute disclaimer in srs-impact
+# §6 SRS-impact Mandatory Prompt present (P6 신규)
+must_match	### SRS-impact Mandatory Prompt	mandatory prompt subsection
+must_match	지금 SRS 업데이트할까요	mandatory prompt question
+must_match	1\. 지금 바로	choice 1 label
+must_match	2\. 나중에	choice 2 label
+must_match	3\. 무시	choice 3 label
 must_match	결제 환불 정책 변경	first srs-impact item
 must_match	회원 등급 시스템 추가	second srs-impact item
-
-# 추천 /to-spec calls for each detected item (output only — never auto-run)
-must_match	추천: /to-spec --client connectory	first recommendation
+must_match	PM 선택: \*\*1 \(지금 바로\)\*\*	PM chose option 1
 must_match	owner: Dev	owner annotation
 
-# Auto-execution forbidden (file-level)
-must_not_match	→ 자동 실행	no auto-execution language
-must_not_match	^Running /to-spec	no actual /to-spec running
+# Auto-invoke is deferred to next turn — output indicates planned calls
+must_match	다음 턴에서 2건 /to-spec 순차 자동 호출	deferred auto-invoke language
+must_match	2차 안전망	mention of /to-spec's own confirm gate
+
+# In-skill auto MCP forbidden — no raw running of to-spec in same response
+must_not_match	^Running /to-spec	no in-skill /to-spec exec marker

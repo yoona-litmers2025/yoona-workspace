@@ -18,6 +18,7 @@ out_of_scope_count: 0
 memo_only_count: 0
 to_spec_recommendation: yes
 srs_impact_detected_count: 2
+pm_srs_prompt_choice: "1"
 ---
 
 ## 1. Step 3 Confirm Gate
@@ -85,17 +86,28 @@ Please review and let me know if anything needs more effort than expected.
 ## 6. 추가 제안
 
 - **/to-spec 추천 trigger 발동** — 회원 등급 시스템 (Dev / 신규 기능 / owner·스펙 명확).
-  - 권장 호출: `/to-spec --client connectory --project Connectory-1 "회원 등급 시스템 추가 (Bronze / Silver / Gold)"`
-  - **자동 실행 안 함** — PM이 직접 호출 시점·범위 결정 후 invoke.
+  - 권장 호출 인자: `/to-spec --client connectory --project Connectory-1 "회원 등급 시스템 추가 (Bronze / Silver / Gold)"`
 
-### SRS-impact 의심 항목 (자동 실행 안 함 — PM 판단)
+### SRS-impact Mandatory Prompt
+
+💡 SRS-impact 감지 2건:
 - [확정] 결제 환불 정책 변경 — owner: Dev
-  추천: /to-spec --client connectory --project Connectory-1 "결제 환불 정책 변경 (영업일 처리)"
 - [확정] 회원 등급 시스템 추가 — owner: Dev
-  추천: /to-spec --client connectory --project Connectory-1 "회원 등급 시스템 추가 (Bronze / Silver / Gold)"
+
+지금 SRS 업데이트할까요?
+
+1. 지금 바로 — 각 항목별 /to-spec 자동 호출 (PM Confirm Gate 4지선다는 /to-spec 안에서 통과)
+2. 나중에 — PM Action Hub에 follow-up 자동 등록 (/todo 자동 호출)
+3. 무시 — 본 라운드 감지 무효
+
+추천: 1
+
+PM 선택: **1 (지금 바로)** — 다음 턴에서 2건 /to-spec 순차 자동 호출 예정:
+- `/to-spec --client connectory --project Connectory-1 "결제 환불 정책 변경 (영업일 처리)"`
+- `/to-spec --client connectory --project Connectory-1 "회원 등급 시스템 추가 (Bronze / Silver / Gold)"`
 
 ## 7. Notes
 
 - Step 5.5 SRS-impact 감지 결과: 2건 (동사 "변경" + "추가", owner=Dev, 신규 기능 성격).
-- 자동 chain 금지 — /to-spec invoke는 PM 직접. 본 snapshot에는 권장 호출 인자만 표시.
-- to_spec_recommendation: yes / srs_impact_detected_count: 2 / status: Confirmed-1.
+- Mandatory prompt 출력 (1건 이상 감지 시 의무). PM이 1 선택 → 다음 턴에서 /to-spec 2건 auto-invoke. /to-spec의 자체 4지선다 PM Confirm Gate는 매 호출마다 정상 통과 (2차 안전망).
+- to_spec_recommendation: yes / srs_impact_detected_count: 2 / pm_srs_prompt_choice: "1" / status: Confirmed-1.

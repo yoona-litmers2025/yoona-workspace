@@ -247,9 +247,9 @@ Please review and let me know if anything needs more effort than expected.
 - 체크박스·표·기술 디테일 금지.
 - `추가 확인 부탁드리는 사항`은 번호 목록 허용 (2개 이상일 때).
 
-### Step 5.5: SRS-impact 의심 항목 감지 (Notion 저장 X — 화면 출력만)
+### Step 5.5: SRS-impact 의심 항목 감지 + Mandatory Confirm Prompt
 
-미팅 결과 중 SRS Living Document 갱신이 필요할 가능성이 있는 항목을 별도로 감지·표시한다. **자동 실행 ❌ — PM이 /to-spec을 직접 호출해야 SRS 본문·Change Log 반영.**
+미팅 결과 중 SRS Living Document 갱신이 필요할 가능성이 있는 항목을 감지하고, **감지된 항목이 1건 이상이면 mandatory 3-choice prompt를 띄운다**. 1·2 선택 시 후속 스킬 auto-invoke 허용.
 
 **스캔 대상** (Part 1 본문):
 1. `### 이번 미팅에서 확정된 것` 섹션의 각 bullet
@@ -266,7 +266,30 @@ Please review and let me know if anything needs more effort than expected.
 - 내부 운영 (예: "PM 리마인더", "Slack 채널 정리")
 - 미팅에서 명시적으로 "그냥 메모" / "비공식" / "공식 아님"이라고 언급된 항목
 
-**0건이면 본 단계 출력 통째 생략** (§6 추가 제안 블록의 SRS-impact 하위만 생략, /to-spec 추천 등 다른 항목은 그대로).
+**0건이면 prompt 통째 생략**. 1건 이상이면 출력 끝에 다음 prompt를 의무 표시:
+
+```
+💡 SRS-impact 감지 N건:
+- [<확정|Action>] <항목 요약> — owner: <Dev|PM+Dev>
+- [<확정|Action>] <항목 요약> — owner: <Dev|PM+Dev>
+
+지금 SRS 업데이트할까요?
+
+1. 지금 바로 — 각 항목별 /to-spec 자동 호출 (PM Confirm Gate 4지선다는 /to-spec 안에서 별도 통과)
+2. 나중에 — PM Action Hub DB에 "SRS-impact follow-up: <항목>" 자동 등록 (/todo 자동 호출)
+3. 무시 — 본 라운드 감지 무효 (false-positive 판단)
+
+추천: 1
+```
+
+**PM 선택 후 동작**:
+- **1 (지금 바로)**: 본 응답 종료 후 다음 턴에서 각 항목별로 `/to-spec --client <c> --project <p> "<항목 요약>"` 순차 자동 호출. /to-spec의 4지선다 Confirm Gate는 매 호출마다 정상 노출.
+- **2 (나중에)**: 본 응답 종료 후 다음 턴에서 각 항목별로 `/todo [<project>] SRS-impact follow-up: <항목 요약>` 자동 호출. PM Action Hub에 누적 → 추후 /today-brief 또는 PM이 직접 batch 처리.
+- **3 (무시)**: silenced. 어떤 후속 action도 안 함. 같은 미팅에서 재감지 prompt 없음.
+
+**중요 — auto-invoke 안전장치**:
+- /to-spec auto-invoke는 본 스킬 내에서 직접 MCP 호출 X. PM 응답을 받은 다음 턴에서 Claude가 Skill tool로 /to-spec invoke. /to-spec의 자체 PM Confirm Gate는 그대로 동작.
+- 1·2 선택 시 본 스킬은 "다음 턴에 N개 /to-spec(또는 /todo) 호출 예정" 안내만 출력. 실제 invoke는 다음 PM 응답 후.
 
 ### Step 6: 최종 출력
 ```
@@ -281,10 +304,18 @@ Please review and let me know if anything needs more effort than expected.
 
 ━━━ 추가 제안 ━━━
 - /to-spec 추천 (있을 때만): priority=🔵 + 신규 기능 후보 + 요청 주체 명확
-- SRS-impact 의심 항목 (자동 실행 안 함 — PM 판단): Step 5.5 결과
-  - [확정/Action] <항목 요약> — owner: <Dev/PM+Dev>
-    추천: /to-spec --client <c> --project <p> "<항목 요약>"
 - PM 액션 리마인더 (있을 때만)
+
+━━━ SRS-impact Mandatory Prompt (Step 5.5 결과, 1건 이상일 때만) ━━━
+💡 SRS-impact 감지 N건:
+- [확정/Action] <항목 요약> — owner: <Dev/PM+Dev>
+
+지금 SRS 업데이트할까요?
+1. 지금 바로 — 각 항목별 /to-spec 자동 호출
+2. 나중에 — PM Action Hub에 follow-up 등록 (/todo 자동 호출)
+3. 무시
+
+추천: 1
 ```
 
 ## Rules
@@ -309,7 +340,7 @@ Please review and let me know if anything needs more effort than expected.
 - `confidence=low` 액션이 신규·스펙 미확정 성격이면 Action Items 대신 `이번 라운드 범위 밖`으로 보내는 것을 우선 검토.
 - Dev 액션 중 2일 이상 / 여러 컴포넌트 + owner·스펙 명확 → /to-spec 추천 태그.
 - 용어는 glossary 기준.
-- **SRS-impact 의심 항목 감지 (Step 5.5)** — 확정된 것 + 바로 진행할 일에서 동사·REQ ID·도메인 신규 기능 패턴 감지 시 §6 추가 제안에 표시. **자동 chain 절대 금지 — /to-spec invoke는 PM 직접**.
+- **SRS-impact 의심 항목 감지 + Mandatory Prompt (Step 5.5)** — 확정된 것 + 바로 진행할 일에서 동사·REQ ID·도메인 신규 기능 패턴 감지 시 mandatory 3-choice prompt 출력. PM 선택 1(지금 바로) 시 각 항목별 /to-spec auto-invoke 허용. PM 선택 2(나중에) 시 /todo auto-invoke로 PM Action Hub 등록. PM 선택 3(무시) 시 silenced. /to-spec의 자체 4지선다 PM Confirm Gate는 매 auto-invoke마다 정상 통과.
 
 ### Part별 언어/톤
 - Part 1: 한국어, 간결체. 불릿 중심, 블록 구조.
