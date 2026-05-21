@@ -8,6 +8,8 @@ source_ref: "tests/to-spec/fixtures/case07-project-missing-fallback.md (test fix
 srs_ref: missing
 design_md: missing
 spec_pages: []
+srs_update_count: 0
+changelog_entries_added: 0
 ---
 
 # Request Triage — 본인 인증 이메일 추가 (project 미식별)

@@ -8,6 +8,8 @@ source_ref: "tests/to-spec/fixtures/case03-confirm-needed-default.md (test fixtu
 srs_ref: missing
 design_md: missing
 spec_pages: []
+srs_update_count: 0
+changelog_entries_added: 0
 ---
 
 # Request Triage — 어드민 회원 점수 조정 기능 (대상·한도·이력 미정)

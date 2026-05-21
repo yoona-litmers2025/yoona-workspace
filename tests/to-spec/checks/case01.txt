@@ -1,4 +1,4 @@
-# case01: In-Round + PM cancel → Notion not generated, spec_pages empty
+# case01: In-Round + PM cancel (4-choice gate) → Notion not generated, spec_pages empty
 must_match	^status: In-Round-only$	status In-Round-only
 must_match_in_section	In-Round	- \[ \]	In-Round 1+ items
 must_match	Impact: Low	Low impact
@@ -6,5 +6,9 @@ must_match_in_section	Next-Round	\(현재 항목 없음	Next-Round empty
 must_match_in_section	Out-of-Scope	\(현재 항목 없음	Out-of-Scope empty
 must_match_in_section	Confirm-Needed	\(현재 항목 없음	Confirm-Needed empty
 must_match	^spec_pages: \[\]$	spec_pages empty (cancel)
-must_match	PM 선택: \*\*3 \(취소\)\*\*	PM cancel choice
-must_match_in_section	8. Notion 스펙 \+ 태스크	생성 안 됨 — PM cancel	cancel result in section 8
+must_match	^srs_update_count: 0$	no SRS update (cancel)
+must_match	^changelog_entries_added: 0$	no changelog entry (cancel)
+must_match	PM 선택: \*\*4 \(취소\)\*\*	PM cancel choice (new 4-choice gate)
+must_match_in_section	7. PM Confirm Gate	1\. 전체 진행	new 4-choice gate option 1
+must_match_in_section	7. PM Confirm Gate	2\. SRS 본문·Change Log skip	new gate option 2
+must_match_in_section	8. Notion 스펙 + 태스크	생성 안 됨 — PM cancel	cancel result in section 8

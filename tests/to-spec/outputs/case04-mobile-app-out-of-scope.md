@@ -8,6 +8,8 @@ source_ref: "tests/to-spec/fixtures/case04-out-of-scope.md (test fixture)"
 srs_ref: clients/connectory/Connectory-1/srs.md
 design_md: missing
 spec_pages: []
+srs_update_count: 0
+changelog_entries_added: 0
 ---
 
 # Request Triage — iOS / Android 모바일 앱 출시 (계약 외)

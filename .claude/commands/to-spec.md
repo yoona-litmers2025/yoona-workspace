@@ -28,7 +28,8 @@ allowed-tools: Read, Glob, Grep, Bash, mcp__notion-cigro__notion-create-pages, m
 
 ## Hard Boundaries (이 스킬은 절대 안 함)
 
-1. Official SRS / design.md / wireframe 편집·생성 — read-only 참조만
+1. **design.md / wireframe** 편집·생성 — read-only 참조만 (Nexus PM Agent 영역)
+   - **SRS는 예외** — 본 스킬이 SRS Living Document의 canonical writer (REQ 본문 patch + Change Log entry append). Section 8 Part E 참조.
 2. Nexus MCP 호출 (`mcp__nexus-os__*` 어떤 것이든) — read·write 모두 금지
 3. Linear 이슈 자동 생성 — PM이 별도 `/issue-ticket`
 4. 자동 chain 트리거 (`/dev-chat` / `/client-chat` / `/qa-feedback` / `/qa-plan`) — "다음 단계" 안내만
@@ -181,52 +182,73 @@ Confirm-Needed:
 
 #### Section 7. PM Confirm Gate (In-Round 항목 있을 때만)
 
-**Notion 자동 write 직전 의무 단계.** In-Round 항목이 0건이면 이 게이트 skip.
+**Notion / SRS 자동 write 직전 의무 단계.** In-Round 항목이 0건이면 이 게이트 skip.
 
-화면에 다음 형식으로 미리보기 + 4지선다 출력:
+화면에 다음 형식으로 미리보기 + 4지선다 출력. **SRS Living Doc 추가로 인해 4 변경(스펙 / 태스크 / SRS 본문 / Change Log)을 한 번에 묶어 진행 / 부분 / 수정 / 취소**:
 
 ```
 [확인 필요]
-다음 In-Round 항목을 Notion 스펙 페이지 + 태스크 N개로 생성합니다:
+다음 In-Round 항목을 4가지 변경으로 생성합니다:
 
-스펙 페이지:
-- Title: <한 줄 요약>
-- Scope summary: <table preview>
-- AC: <preview>
-- Tasks: N개 (<task1>, <task2>, ...)
+스펙 페이지: <Title>
+태스크: N개 (<task1>, <task2>, ...)
+SRS 본문 patch: <REQ ID 또는 신규 REQ 채번 — 매칭 알고리즘 결과>
+Change Log entry: 1건
 
-1. 진행 (Notion 페이지 + 태스크 생성)
-2. 수정 (4-bucket 분류 다시 검토)
-3. 취소 (Notion 생성 안 함, 로컬 triage markdown만)
+1. 전체 진행 (4가지 모두 — 권장)
+2. SRS 본문·Change Log skip (스펙·태스크만 — escape hatch, SRS drift 위험)
+3. 수정 (4-bucket 분류 다시 검토)
+4. 취소 (Notion 생성 안 함, 로컬 triage markdown만)
 
 추천: 1
 ```
 
-PM이 1을 명시 선택하기 전까지 Notion API 호출 ❌.
+PM이 1 또는 2를 명시 선택하기 전까지 Notion API 호출 ❌. 옵션 2는 SRS와 실제 코드가 drift할 위험이 있으므로 escape hatch로만 사용 (예: SRS 페이지 미연결 + 추후 정리 예정).
 
-#### Section 8. Notion 스펙 + 태스크 (PM confirm 후 자동 채움)
+**SRS 페이지 부재 시(`srs_ref: missing`)**: gate 미리보기에서 "SRS 본문 patch / Change Log entry" 라인 자동 hidden, 옵션 1·2 동일 결과 (스펙·태스크만). §9에 `[확인 필요] SRS 미연결 — /create-srs 또는 PM 수동 연결 권장` 명시.
 
-**조건: §7 PM confirm gate에서 1번 선택 + In-Round 항목 ≥ 1개**
+#### Section 8. Notion 스펙 + 태스크 + SRS 본문 + Change Log (PM confirm 후 자동 채움)
 
-- **Part A 스펙 페이지 (커뮤니케이션 DB `3793aae9a894836e8a200120b24454e4`)**:
+**조건: §7 PM confirm gate에서 1번 또는 2번 선택 + In-Round 항목 ≥ 1개**
+
+- **Part A 스펙 페이지 (커뮤니케이션 DB `3793aae9a894836e8a200120b24454e4`)** — 1·2 모두:
   - 유형: 개발 스펙 / 방향: Client→Dev / 상태: 진행 중
   - 클라이언트·프로젝트 속성 필수
   - Title / Context / Scope Summary 표 / Constraints / Open Questions / SRS Impact / Ref(한국어 원문)
-- **Part B 태스크 (태스크 DB `b9f3aae9a8948322abee81e151af9831`)**:
+- **Part B 태스크 (태스크 DB `b9f3aae9a8948322abee81e151af9831`)** — 1·2 모두:
   - 각 In-Round 항목을 개별 태스크로 분리 (한 태스크 = 개발자가 독립적으로 완료할 수 있는 단위)
   - 상태: 시작 전 / 우선순위: High|Medium|Low (요청 맥락 기반)
   - 클라이언트·프로젝트·스펙 출처 URL·AC·비고
-- **Part C 스펙 페이지 update**:
+- **Part C 스펙 페이지 update** — 1·2 모두:
   - `mcp__notion-cigro__notion-update-page`로 스펙 페이지 하단에 `## Tasks` 섹션 추가
   - 표: Task (link) | Priority | AC | Notes
   - 표 위에 "상태 관리는 태스크 DB에서 진행합니다." 안내
-- **Part D 결과 frontmatter `spec_pages`에 스펙 페이지 URL 기록**
+- **Part D 결과 frontmatter `spec_pages`에 스펙 페이지 URL 기록** — 1·2 모두
+- **Part E SRS 본문 patch + Change Log entry** — **gate=1일 때만, gate=2면 skip**:
+  - **조건**: `srs_ref` 유효한 Notion URL (`srs_ref: missing`이면 Part E 자동 skip + §9 warning)
+  - **매칭 알고리즘** (SRS 본문 어느 부분을 patch할지):
+    1. **REQ ID 매칭** (1순위): In-Round 항목이 `REQ-<도메인>-<번호>` 명시 → 섹션 6 해당 REQ 직하단 in-place 갱신
+    2. **섹션 헤더 fallback** (2순위): REQ 없음 + 도메인 코드(AUTH/PAY/...) 명시 → 섹션 6 해당 그룹 끝에 신규 REQ 자동 채번
+    3. **신규 그룹 fallback** (3순위): 둘 다 실패 → 섹션 6 끝 "신규 (분류 미정)" subgroup + `[확인 필요]` 인라인 태그
+  - **just-in-time backfill**: 매칭된 SRS 페이지에 `## Change Log` 섹션 없으면 첫 entry append 직전에 헤더만 prepend. 본문 일괄 backfill 안 함.
+  - **Change Log entry 포맷** (append-only, 절대 기존 entry 수정·삭제 ❌):
+    ```
+    - YYYY-MM-DD [/to-spec] <REQ ID 또는 섹션> — <1줄 diff 요약>
+      Source: <Part A 스펙 페이지 URL>
+      Trigger: <client request / 미팅 결정 / QA 피드백 — 요청 채널>
+    ```
+  - **결과 frontmatter**:
+    - `srs_update_count: <int>` — 본 라운드에서 patch된 REQ 또는 섹션 수
+    - `changelog_entries_added: <int>` — Change Log에 추가된 entry 수 (보통 1)
+- **한국어 SRS만 canonical writer**. 영문 SRS(`/srs-translate`로 만든 KR→EN 페이지)는 본 스킬이 직접 건드리지 않음 — PM이 별도 `/srs-translate --mode=update` 호출로 sync.
 
 #### Section 9. PM 다음 단계
 - In-Round (Notion 생성됨): /dev-chat에 §6 사용 / linked view 수동 설정 안내
 - Confirm-Needed: /client-chat에 §5 사용
 - Out-of-Scope: /client-chat에 거절 안내 사용
 - Next-Round: 로컬 기록만, 다음 라운드 진입 시 본 항목 검토
+- **SRS 미연결 (`srs_ref: missing`)**: `[확인 필요] SRS 페이지 미연결 — /create-srs로 신규 생성 또는 PM이 수동으로 srs_ref 연결 필요. 본 라운드 In-Round 변경은 스펙·태스크만 반영됨 (Part E skip).`
+- **gate=2 (SRS skip) 선택 시**: `[확인 필요] SRS 본문·Change Log 반영 skip됨 — SRS와 실제 코드 drift 위험. 추후 정리 시점에 본 triage 파일 재검토 권장.`
 
 ### Step 8. 로컬 저장 (3단 fallback)
 
@@ -289,13 +311,16 @@ triage markdown은 항상 로컬 저장 (Notion 생성 여부와 별도):
 - 용어는 glossary 기준 (`glossary/<c>.md`)
 - 한 요청에 여러 기능이 섞여 있으면 In-Round 스펙은 1개, 태스크는 기능별 분리
 - 태스크 granularity: "API endpoint 하나" 또는 "UI 컴포넌트 하나" 수준
-- PM confirm gate 4지선다 의무 (1 진행 / 2 수정 / 3 취소 — `CLAUDE.md` 확인 요청 형식 룰 준수)
+- PM confirm gate 4지선다 의무 (1 전체 진행 / 2 SRS skip / 3 수정 / 4 취소 — `CLAUDE.md` 확인 요청 형식 룰 준수)
+- SRS Change Log entry는 append-only — 기존 entry 수정·삭제 절대 ❌. 잘못 적었으면 정정 entry 새로 추가.
 - 9 섹션 모두 존재. 빈 섹션은 `[확인 필요]` 또는 `(현재 항목 없음)` 명시
 
 ### 금지
 - 자동 chain 트리거 (`/dev-chat` / `/client-chat` / `/qa-feedback` / `/qa-plan` / `/issue-ticket`)
 - PM confirm gate 우회 Notion auto-write
 - Next-Round / Out-of-Scope / Confirm-Needed 버킷의 Notion auto-write (영원히)
+- PM confirm gate 우회 SRS 본문·Change Log auto-write (gate=1일 때만 Part E 실행)
+- 영문 SRS 직접 patch (KR canonical, 영문은 별도 `/srs-translate --mode=update`)
 - Linear 이슈 자동 생성
 - Nexus MCP 호출
 - 구체 공수(MD/hour/day) AI 산정

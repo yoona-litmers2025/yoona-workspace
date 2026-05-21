@@ -8,6 +8,8 @@ source_ref: "tests/to-spec/fixtures/case01-in-round-cancel.md (test fixture)"
 srs_ref: missing
 design_md: missing
 spec_pages: []
+srs_update_count: 0
+changelog_entries_added: 0
 ---
 
 # Request Triage — 결제 완료 화면 주문번호 형식 통일 (# prefix)
@@ -58,22 +60,22 @@ spec_pages: []
 
 ```
 [확인 필요]
-다음 In-Round 항목을 Notion 스펙 페이지 + 태스크 1개로 생성합니다:
+다음 In-Round 항목을 4가지 변경으로 생성합니다:
 
-스펙 페이지:
-- Title: Standardize order number format on payment completion screen
-- Scope summary: Display format change only (UI text)
-- AC: When user completes payment, then order number is `#<number>`
-- Tasks: 1개 (Update payment-completion screen order number format)
+스펙 페이지: Standardize order number format on payment completion screen
+태스크: 1개 (Update payment-completion screen order number format)
+SRS 본문 patch: (skip — srs_ref: missing)
+Change Log entry: (skip — srs_ref: missing)
 
-1. 진행 (Notion 페이지 + 태스크 생성)
-2. 수정 (4-bucket 분류 다시 검토)
-3. 취소 (Notion 생성 안 함, 로컬 triage markdown만)
+1. 전체 진행 (4가지 모두 — 권장)
+2. SRS 본문·Change Log skip (스펙·태스크만)
+3. 수정 (4-bucket 분류 다시 검토)
+4. 취소 (Notion 생성 안 함, 로컬 triage markdown만)
 
 추천: 1
 ```
 
-PM 선택: **3 (취소)** — Notion 생성 skip, 로컬 triage markdown만.
+PM 선택: **4 (취소)** — Notion 생성 skip, 로컬 triage markdown만.
 
 ## 8. Notion 스펙 + 태스크
 - 스펙 페이지: (생성 안 됨 — PM cancel)

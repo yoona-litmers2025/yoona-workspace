@@ -7,6 +7,8 @@ must_match	^source: 	source field
 must_match	^srs_ref: 	srs_ref field
 must_match	^design_md: 	design_md field
 must_match	^spec_pages:	spec_pages field
+must_match	^srs_update_count: [0-9]+$	srs_update_count integer (P2 SRS Living Doc)
+must_match	^changelog_entries_added: [0-9]+$	changelog_entries_added integer (P2 SRS Living Doc)
 must_match	Reference draft	reference-draft banner
 must_match	## 1\. 변경 요청 요약	section 1
 must_match	## 2\. 기존 범위 대비 영향도	section 2

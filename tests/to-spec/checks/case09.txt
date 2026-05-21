@@ -1,9 +1,11 @@
-# case09: PM 선택=2 (수정) — In-Round defer, no Notion write
+# case09: PM 선택=3 (수정, 4-choice gate) — In-Round defer, no Notion write, no SRS update
 must_match	^spec_pages: \[\]$	spec_pages empty
 must_match	^status: In-Round-only$	status In-Round-only
+must_match	^srs_update_count: 0$	no SRS update (defer)
+must_match	^changelog_entries_added: 0$	no changelog entry (defer)
 
-# §7 PM 선택: 2 explicit
-must_match	PM 선택: \*\*2 \(수정\)\*\*	PM 선택 2 marker
+# §7 PM 선택: 3 explicit (new 4-choice gate; modify is option 3)
+must_match	PM 선택: \*\*3 \(수정\)\*\*	PM 선택 3 marker
 
 # §8 보류 explicit
 must_match_in_section	8. Notion 스펙 + 태스크	보류	hold marker

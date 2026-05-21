@@ -1,0 +1,19 @@
+# case13: PM gate 옵션 2 (SRS skip) — escape hatch (P2)
+must_match	^status: In-Round-only$	status In-Round-only
+must_match	^srs_update_count: 0$	no SRS update (PM skip)
+must_match	^changelog_entries_added: 0$	no changelog entry (PM skip)
+
+# spec page still created (Part A-D run, Part E skipped by PM choice)
+must_match	mock-spec-page-url-	spec page URL recorded
+
+# §7 PM option 2 selected
+must_match	PM 선택: \*\*2 \(SRS 본문·Change Log skip\)\*\*	PM gate option 2
+must_match_in_section	7. PM Confirm Gate	1\. 전체 진행	gate option 1 visible
+must_match_in_section	7. PM Confirm Gate	2\. SRS 본문·Change Log skip	gate option 2 visible
+
+# §9 warning about drift
+must_match	drift 위험	drift warning in §9
+must_match	SRS 본문·Change Log 반영 skip	SRS skip language
+
+# Part E should NOT run — no change log entry
+must_not_match	\[/to-spec\] REQ-CON-	no change log entry format

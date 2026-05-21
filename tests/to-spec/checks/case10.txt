@@ -1,0 +1,22 @@
+# case10: SRS Living Doc — REQ ID 매칭 (P2 canonical writer)
+must_match	^status: In-Round-only$	status In-Round-only
+must_match	^srs_update_count: 1$	1 REQ patched
+must_match	^changelog_entries_added: 1$	1 change log entry
+
+# §7 새 4-choice gate + PM full proceed
+must_match	PM 선택: \*\*1 \(전체 진행\)\*\*	PM full proceed
+must_match_in_section	7. PM Confirm Gate	1\. 전체 진행	gate option 1 label
+must_match_in_section	7. PM Confirm Gate	2\. SRS 본문·Change Log skip	gate option 2 label
+must_match_in_section	7. PM Confirm Gate	REQ-CON-PAY-03	REQ ID in gate preview
+
+# §8 Part E — SRS body patch + Change Log entry
+must_match_in_section	8. Notion 스펙 + 태스크 + SRS 본문 + Change Log	REQ-CON-PAY-03	REQ ID in section 8
+must_match	SRS 본문 patch	SRS body patch keyword
+must_match	Change Log entry	change log entry mention
+must_match	\[/to-spec\] REQ-CON-PAY-03	change log entry format (skill + REQ ID)
+must_match	Source: https	source URL line in entry
+must_match	Trigger: 	trigger line in entry
+
+# Append-only invariant (no edit/delete of existing entries)
+must_not_match	기존 entry 수정	no entry edit language
+must_not_match	기존 entry 삭제	no entry delete language

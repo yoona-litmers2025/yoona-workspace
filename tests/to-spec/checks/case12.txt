@@ -1,0 +1,17 @@
+# case12: srs_ref missing → Part E auto-skip, spec+task still created (P2 safe-fail)
+must_match	^status: In-Round-only$	status In-Round-only
+must_match	^srs_ref: missing$	SRS unreffed
+must_match	^srs_update_count: 0$	no SRS update (skipped)
+must_match	^changelog_entries_added: 0$	no changelog entry (skipped)
+
+# spec page still created (Part A-D run, Part E skipped)
+must_match	mock-spec-page-url-	spec page URL recorded
+
+# §7 PM full proceed selected — but Part E auto-skip due to missing SRS
+must_match	PM 선택: \*\*1 \(전체 진행\)\*\*	PM full proceed
+must_match_in_section	7. PM Confirm Gate	srs_ref: missing	missing SRS shown in gate
+must_match_in_section	7. PM Confirm Gate	skip	skip language in gate preview
+
+# §9 warning
+must_match	SRS 미연결	SRS missing warning in §9
+must_match	/create-srs	create-srs recommendation

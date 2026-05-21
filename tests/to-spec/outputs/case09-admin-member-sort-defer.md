@@ -8,6 +8,8 @@ source_ref: "tests/to-spec/fixtures/case09-in-round-defer.md (test fixture)"
 srs_ref: clients/Connectory/Connectory-1/srs.md
 design_md: missing
 spec_pages: []
+srs_update_count: 0
+changelog_entries_added: 0
 ---
 
 # Request Triage — 어드민 회원 정렬 옵션 + 통계 표시 (수정 보류)
@@ -55,22 +57,22 @@ spec_pages: []
 
 ```
 [확인 필요]
-다음 In-Round 항목을 Notion 스펙 페이지 + 태스크 1개로 생성합니다:
+다음 In-Round 항목을 4가지 변경으로 생성합니다:
 
-스펙 페이지:
-- Title: Add sort options to admin member management screen
-- Scope summary: Sort by signup date / last login / name (Korean alphabetical)
-- AC: When admin opens member list, then sort dropdown is available with the 3 options
-- Tasks: 1개 (Add sort dropdown to admin member list)
+스펙 페이지: Add sort options to admin member management screen
+태스크: 1개 (Add sort dropdown to admin member list)
+SRS 본문 patch: REQ-CON-ADM-04 — 정렬 옵션 추가
+Change Log entry: 1건
 
-1. 진행 (Notion 페이지 + 태스크 생성)
-2. 수정 (4-bucket 분류 다시 검토)
-3. 취소
+1. 전체 진행 (4가지 모두 — 권장)
+2. SRS 본문·Change Log skip (스펙·태스크만)
+3. 수정 (4-bucket 분류 다시 검토)
+4. 취소
 
 추천: 1
 ```
 
-PM 선택: **2 (수정)** — 통계 항목이 Confirm-Needed로 분류됐지만, PM이 정렬 옵션도 같이 고객 확인 후 한 번에 진행할지 재검토하기로 결정. 4-bucket 분류 재검토 필요.
+PM 선택: **3 (수정)** — 통계 항목이 Confirm-Needed로 분류됐지만, PM이 정렬 옵션도 같이 고객 확인 후 한 번에 진행할지 재검토하기로 결정. 4-bucket 분류 재검토 필요.
 
 ## 8. Notion 스펙 + 태스크
 

@@ -9,6 +9,8 @@ srs_ref: clients/connectory/Connectory-1/srs.md
 design_md: missing
 spec_pages:
   - "https://www.notion.so/cigroio/mock-spec-page-url-payment-order-number"
+srs_update_count: 1
+changelog_entries_added: 1
 ---
 
 # Request Triage — 미팅 3건 동시 (결제 텍스트 / 등급별 차등 / 푸시)
@@ -63,24 +65,28 @@ spec_pages:
 
 ```
 [확인 필요]
-다음 In-Round 항목을 Notion 스펙 페이지 + 태스크 1개로 생성합니다:
+다음 In-Round 항목을 4가지 변경으로 생성합니다:
 
-스펙 페이지:
-- Title: Standardize order number format on payment completion screen
-- Tasks: 1개
+스펙 페이지: Standardize order number format on payment completion screen
+태스크: 1개
+SRS 본문 patch: REQ-CON-PAY-03 (결제 완료 표시) — `#<number>` 형식 명시
+Change Log entry: 1건
 
-1. 진행
-2. 수정
-3. 취소
+1. 전체 진행 (4가지 모두 — 권장)
+2. SRS 본문·Change Log skip (스펙·태스크만)
+3. 수정 (4-bucket 분류 다시 검토)
+4. 취소
 
 추천: 1
 ```
 
-PM 선택: **1 (진행)**.
+PM 선택: **1 (전체 진행)** — In-Round 1건 모두 반영.
 
-## 8. Notion 스펙 + 태스크
+## 8. Notion 스펙 + 태스크 + SRS 본문 + Change Log
 - 스펙 페이지: https://www.notion.so/cigroio/mock-spec-page-url-payment-order-number
 - 태스크 1개: Update payment-completion screen order number format
+- SRS 본문 patch: REQ-CON-PAY-03 — 결제 완료 화면 주문번호 `#<number>` 형식 통일
+- Change Log entry: `- 2026-04-28 [/to-spec] REQ-CON-PAY-03 — 주문번호 형식 `#<number>` 통일 / Source: 위 스펙 URL / Trigger: meeting decision`
 - linked view 수동 설정 안내: 스펙 페이지 하단 /linked view → 태스크 DB 추가 → 필터: 스펙 출처 = "Standardize order number format on payment completion screen"
 
 ## 9. PM 다음 단계

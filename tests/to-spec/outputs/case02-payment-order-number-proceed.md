@@ -9,6 +9,8 @@ srs_ref: clients/connectory/Connectory-1/srs.md
 design_md: missing
 spec_pages:
   - "https://www.notion.so/cigroio/mock-spec-page-url-payment-order-number"
+srs_update_count: 1
+changelog_entries_added: 1
 ---
 
 # Request Triage — 결제 완료 화면 주문번호 형식 통일 (# prefix, 진행)
@@ -59,27 +61,30 @@ spec_pages:
 
 ```
 [확인 필요]
-다음 In-Round 항목을 Notion 스펙 페이지 + 태스크 1개로 생성합니다:
+다음 In-Round 항목을 4가지 변경으로 생성합니다:
 
-스펙 페이지:
-- Title: Standardize order number format on payment completion screen
-- Scope summary: Display format only
-- AC: When payment complete, order number is `#<number>`
-- Tasks: 1개 (Update payment-completion screen)
+스펙 페이지: Standardize order number format on payment completion screen
+태스크: 1개 (Update payment-completion screen)
+SRS 본문 patch: REQ-CON-PAY-03 (결제 완료 표시) — 주문번호 표시 형식 `#<number>` 명시
+Change Log entry: 1건
 
-1. 진행 (Notion 페이지 + 태스크 생성)
-2. 수정 (4-bucket 분류 다시 검토)
-3. 취소
+1. 전체 진행 (4가지 모두 — 권장)
+2. SRS 본문·Change Log skip (스펙·태스크만)
+3. 수정 (4-bucket 분류 다시 검토)
+4. 취소
 
 추천: 1
 ```
 
-PM 선택: **1 (진행)** — Notion 스펙 페이지 + 태스크 생성됨.
+PM 선택: **1 (전체 진행)** — 스펙 + 태스크 + SRS 본문 patch + Change Log entry 모두 생성됨.
 
-## 8. Notion 스펙 + 태스크
+## 8. Notion 스펙 + 태스크 + SRS 본문 + Change Log
 - 스펙 페이지: https://www.notion.so/cigroio/mock-spec-page-url-payment-order-number
 - 태스크 1개:
   - [ ] Update payment-completion screen order number format (Priority: Medium / AC: When payment complete, order number is `#<number>` / link: mock)
+- SRS 본문 patch: REQ-CON-PAY-03 — 결제 완료 화면 주문번호 표시는 `#<number>` 형식 (다른 화면과 일관성)
+- Change Log entry (SRS 페이지 끝에 append):
+  - `- 2026-04-28 [/to-spec] REQ-CON-PAY-03 — 주문번호 표시 형식 `#<number>`로 통일 / Source: https://www.notion.so/cigroio/mock-spec-page-url-payment-order-number / Trigger: client request`
 - linked view 수동 설정 안내: 스펙 페이지 하단 /linked view → 태스크 DB 추가 → 필터: 스펙 출처 = "Standardize order number format on payment completion screen"
 
 ## 9. PM 다음 단계

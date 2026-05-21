@@ -8,6 +8,8 @@ source_ref: "tests/to-spec/fixtures/case06-missing-srs-design.md (test fixture)"
 srs_ref: missing
 design_md: missing
 spec_pages: []
+srs_update_count: 0
+changelog_entries_added: 0
 ---
 
 # Request Triage — 비밀번호 재설정 링크 색상 변경 (디자인 가이드 미정)

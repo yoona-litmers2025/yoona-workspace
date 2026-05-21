@@ -1,0 +1,17 @@
+# case11: SRS Living Doc — 섹션 헤더 fallback (2순위 매칭)
+must_match	^status: In-Round-only$	status In-Round-only
+must_match	^srs_update_count: 1$	1 REQ added via fallback
+must_match	^changelog_entries_added: 1$	1 change log entry
+
+# PM full proceed (4-choice gate)
+must_match	PM 선택: \*\*1 \(전체 진행\)\*\*	PM full proceed
+must_match_in_section	7. PM Confirm Gate	1\. 전체 진행	gate option 1
+
+# §8 — fallback matching applied (new REQ auto-numbered in AUTH group)
+must_match	REQ-CON-AUTH-	auto-numbered AUTH REQ
+must_match	fallback	fallback algorithm mention
+must_match	AUTH	domain code in body
+
+# Change Log entry — new REQ ID
+must_match	\[/to-spec\] REQ-CON-AUTH-	change log entry references auto-numbered REQ
+must_match	Trigger: meeting	meeting trigger
