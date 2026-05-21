@@ -88,6 +88,11 @@ Please review and let me know if anything needs more effort than expected.
 - **/to-spec 추천 trigger 발동** — admin 정산 리포트 화면 (Dev 2+일 / 여러 컴포넌트 / owner·스펙 명확 / 신규 기능 후보).
   - 권장 호출: `/to-spec --client dsa --project Dsa "admin 정산 리포트 화면 신규 추가 (기간별 매출/환불/정산예정, 막대 차트, CSV 다운로드)"`
   - **자동 실행 안 함** — PM이 직접 호출 시점·범위 결정 후 invoke.
+
+### SRS-impact 의심 항목 (자동 실행 안 함 — PM 판단)
+- [확정] admin 정산 리포트 화면 신규 추가 — owner: Dev
+  추천: /to-spec --client dsa --project Dsa "admin 정산 리포트 화면 신규 추가"
+
 - PM 액션 리마인더 (해당 시): 다음 라운드 SRS에 본 항목 반영 검토.
 
 ## 7. Notes

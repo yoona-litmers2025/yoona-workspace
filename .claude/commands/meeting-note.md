@@ -247,6 +247,27 @@ Please review and let me know if anything needs more effort than expected.
 - 체크박스·표·기술 디테일 금지.
 - `추가 확인 부탁드리는 사항`은 번호 목록 허용 (2개 이상일 때).
 
+### Step 5.5: SRS-impact 의심 항목 감지 (Notion 저장 X — 화면 출력만)
+
+미팅 결과 중 SRS Living Document 갱신이 필요할 가능성이 있는 항목을 별도로 감지·표시한다. **자동 실행 ❌ — PM이 /to-spec을 직접 호출해야 SRS 본문·Change Log 반영.**
+
+**스캔 대상** (Part 1 본문):
+1. `### 이번 미팅에서 확정된 것` 섹션의 각 bullet
+2. `### Action Items > 바로 진행할 일` 섹션의 각 bullet
+
+**감지 조건** (OR 매치 시 SRS-impact 후보로 추출):
+- 동사: `추가|변경|삭제|수정|개선|확장|제거|롤백|반영|신규`
+- 또는 REQ ID / SRS 섹션 직접 언급 (예: `REQ-CON-PAY-03`, `SRS §3`)
+- 또는 `[추론]` 미부착 + owner ∈ {Dev, PM+Dev} + 신규 기능 성격
+
+**False-positive 방지** (다음 항목은 SRS-impact 후보에서 제외):
+- 단순 톤·문구 수정 (예: "버튼 라벨 한 글자 변경")
+- 일정·리소스 합의 (예: "다음 주에 다시 미팅", "Tuan 휴가")
+- 내부 운영 (예: "PM 리마인더", "Slack 채널 정리")
+- 미팅에서 명시적으로 "그냥 메모" / "비공식" / "공식 아님"이라고 언급된 항목
+
+**0건이면 본 단계 출력 통째 생략** (§6 추가 제안 블록의 SRS-impact 하위만 생략, /to-spec 추천 등 다른 항목은 그대로).
+
 ### Step 6: 최종 출력
 ```
 ━━━ Part 1: 미팅 노트 (Notion 저장 완료) ━━━
@@ -260,6 +281,9 @@ Please review and let me know if anything needs more effort than expected.
 
 ━━━ 추가 제안 ━━━
 - /to-spec 추천 (있을 때만): priority=🔵 + 신규 기능 후보 + 요청 주체 명확
+- SRS-impact 의심 항목 (자동 실행 안 함 — PM 판단): Step 5.5 결과
+  - [확정/Action] <항목 요약> — owner: <Dev/PM+Dev>
+    추천: /to-spec --client <c> --project <p> "<항목 요약>"
 - PM 액션 리마인더 (있을 때만)
 ```
 
@@ -285,6 +309,7 @@ Please review and let me know if anything needs more effort than expected.
 - `confidence=low` 액션이 신규·스펙 미확정 성격이면 Action Items 대신 `이번 라운드 범위 밖`으로 보내는 것을 우선 검토.
 - Dev 액션 중 2일 이상 / 여러 컴포넌트 + owner·스펙 명확 → /to-spec 추천 태그.
 - 용어는 glossary 기준.
+- **SRS-impact 의심 항목 감지 (Step 5.5)** — 확정된 것 + 바로 진행할 일에서 동사·REQ ID·도메인 신규 기능 패턴 감지 시 §6 추가 제안에 표시. **자동 chain 절대 금지 — /to-spec invoke는 PM 직접**.
 
 ### Part별 언어/톤
 - Part 1: 한국어, 간결체. 불릿 중심, 블록 구조.

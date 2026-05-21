@@ -1,0 +1,11 @@
+# case09: SRS-impact 0건 — false-positive 방지 룰 적용 (P3 Step 5.5)
+must_match	^status: Confirmed-1$	status Confirmed-1
+must_match	^action_items_count: 1$	1 action item only
+
+# False-positive 방지: 단순 톤 + "그냥 메모" 언급 → SRS-impact subsection 통째 생략
+must_not_match	### SRS-impact 의심 항목	no SRS-impact subsection when zero
+must_not_match	srs_impact_detected_count: [1-9]	no positive srs impact count
+
+# Action item present (basic tone change) but classified as non-SRS-impact
+must_match	환영 메시지	tone change action present
+must_match	^srs_impact_detected_count: 0$	srs impact count 0
