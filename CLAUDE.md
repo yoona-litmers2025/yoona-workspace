@@ -70,6 +70,49 @@ False-positive 방지:
 - client 추론 실패 시 1 선택 후 `--client` 확인 질문이 /to-spec 안에서 발동 (정상 흐름).
 - 같은 세션에서 PM이 한 번 "3 무시" 응답한 주제는 silenced. PM이 "이거 SRS에 반영해줘"라고 명시적으로 reverse하면 다시 활성화.
 
+## Design Rule Inheritance (sales→PM 인계)
+
+PM workspace는 **design.md / 디자인 시스템을 생성하지 않는다** (Nexus PM Agent 영역). 디자인 컨텍스트가 필요한 경우 다음 우선순위로 **read-only 인계받아 follow**한다.
+
+### Source-of-Truth 우선순위
+
+1. **클라이언트 기존 디자인 시스템** (절대 우선)
+   - `clients/<client>/design-rules/` 또는 `clients/<client>/CLAUDE.md`에 명시된 brand reference
+   - 클라가 가진 디자인 자산이 있으면 무조건 1순위
+2. **Sales workspace 데모 산출물** (계약 직후 인계)
+   - 자동 탐색 경로: `~/Documents/litmers-workbench-sales/prototypes/<sales-slug>/`
+   - sales 단계에서 `ui-ux-pro-max` skill로 생성된 데모 (HTML/React/Vue 코드 + 디자인 룰)
+   - 클라이언트가 데모를 보고 클로징한 경우 = **그 디자인이 사실상 합의된 baseline**
+3. **Nexus PM Agent 신규 design.md** (kickoff 이후 새로 만드는 경우)
+   - 1·2 모두 부재한 신규 case에서만 Nexus가 from-scratch 작성
+
+### Sales→PM 자동 인계 룰
+
+PM workspace에서 디자인 컨텍스트가 필요한 skill(`/to-spec`, `/qa-plan`, `/kickoff-prep` 등)이 호출되면:
+
+1. `clients/<client>/<project>/design.md` 우선 탐색 (Nexus 산출물, read-only)
+2. 부재 시 `clients/<client>/design-rules/` 탐색 (클라 기존)
+3. 부재 시 sales workspace 자동 탐색: `~/Documents/litmers-workbench-sales/prototypes/<sales-slug>/`
+   - sales-slug 매핑: `clients/<client>/CLAUDE.md` frontmatter `sales_slug:` 또는 `clients/<client>/<project>/CLAUDE.md`에 명시
+   - 매핑 미정의 시 PM에게 `[확인 필요] sales-slug 매핑 — 어느 prototype 폴더에서 인계받을까요?` 1회 질문 후 frontmatter에 기록
+4. 모두 부재 시 partial-skip (hard-fail 금지) + `[확인 필요] 디자인 컨텍스트 부재 — Nexus 또는 클라 확인 필요`
+
+### Gap-Fill Reference (inline URL only)
+
+기존 rule이 일부만 정의되어 있고 특정 영역(예: chart spec, admin layout 등) 보완이 필요한 경우:
+- **awesome-design-md** (VoltAgent) GitHub repo의 DESIGN.md를 inline URL reference로 인용
+- 경로: `https://github.com/voltagent/awesome-design-md/blob/main/design-md/<brand>/DESIGN.md`
+- 사용 사례: "이 admin 화면의 chart 스펙은 `airbnb/DESIGN.md`의 chart 패턴 참조 권장"
+- **로컬 폴더로 clone·다운로드 ❌** — URL reference만, asset 복사 금지
+- **default 적용 금지** — PM이 명시적으로 "gap-fill 필요" 판단한 경우에만 인용
+
+### Hard Boundary
+
+- PM workspace에서 design.md / wireframe / 디자인 시스템 파일 **생성·편집 ❌**
+- sales workspace의 prototype 폴더 **수정 ❌** (read-only)
+- awesome-design-md 로컬 다운로드·clone ❌ (URL reference만)
+- 우선순위 위반 (예: 클라 기존 무시하고 sales 데모 적용) ❌
+
 ## Critical Rule: Ambiguity Handling
 **NEVER resolve ambiguity silently.** When the Korean source is:
 - vague or underspecified
