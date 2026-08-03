@@ -1,0 +1,13 @@
+interface:
+  display_name: "New Project"
+  short_description: "Onboarding a new client project into the local PM workspace and its required Notion databases and views."
+  default_prompt: "Use $new-project --client <name> --project <project-name>"
+policy:
+  allow_implicit_invocation: false
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion-cigro"
+      description: "Cigro Notion workspace for PM documents, communication, tasks, and action items"
+      transport: "streamable_http"
+      url: "https://mcp.notion.com/mcp"

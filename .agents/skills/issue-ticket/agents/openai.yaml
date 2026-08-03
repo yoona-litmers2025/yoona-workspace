@@ -1,0 +1,13 @@
+interface:
+  display_name: "Issue Ticket"
+  short_description: "Converting a confirmed request or bug into an English Linear issue with acceptance criteria and priority."
+  default_prompt: "Use $issue-ticket --client <name> [요청 내용] --priority <high|medium|low>"
+policy:
+  allow_implicit_invocation: false
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "linear"
+      description: "Linear workspace for issue creation and project tracking"
+      transport: "streamable_http"
+      url: "https://mcp.linear.app/mcp"

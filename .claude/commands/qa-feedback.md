@@ -1,8 +1,10 @@
 ---
-description: 고객 QA 피드백 → 내부 개발팀 티켓 자동 생성 (번역 + 분류 + Notion 연동)
+description: "[DEPRECATED — /qa-update Mode=intake로 흡수됨, 2026-06-01경 제거 예정] 고객 QA 피드백 → 내부 개발팀 티켓 자동 생성"
 argument-hint: --qa-db <고객 QA DB 링크> --project <프로젝트명> [--internal <내부 QA 페이지 링크>]
 allowed-tools: Read, Glob, Grep, Bash
 ---
+
+> **DEPRECATED (2026-05-18)** — 이 스킬은 `/qa-update` 의 Mode 1 (intake) 으로 흡수됐습니다. 신규 호출은 `/qa-update <project-name>` 또는 `/qa-update <project-name> --mode=intake` 사용을 권장합니다. 본 파일은 2026-06-01경까지 호환성을 위해 보존되며, 그 이후 제거됩니다.
 
 # QA Feedback → Dev Ticket
 

@@ -1,0 +1,13 @@
+interface:
+  display_name: "Daily Scrum"
+  short_description: "Preparing a project daily scrum log, PM action updates, and an English developer-team status message."
+  default_prompt: "Use $daily-scrum --client <name> [추가 내용]"
+policy:
+  allow_implicit_invocation: false
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion-cigro"
+      description: "Cigro Notion workspace for PM documents, communication, tasks, and action items"
+      transport: "streamable_http"
+      url: "https://mcp.notion.com/mcp"

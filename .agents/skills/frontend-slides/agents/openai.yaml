@@ -1,0 +1,6 @@
+interface:
+  display_name: "Frontend Slides"
+  short_description: "Creating, converting, or enhancing an animated HTML presentation or web-based slide deck."
+  default_prompt: "Use $frontend-slides"
+policy:
+  allow_implicit_invocation: true

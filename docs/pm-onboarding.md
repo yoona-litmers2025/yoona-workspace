@@ -117,6 +117,35 @@ claude mcp list
 # 모든 서버가 ✓ Connected 인지 확인
 ```
 
+### Codex에서 PM 스킬 사용
+
+Codex는 repo의 `.agents/skills`를 자동 탐색합니다. `.claude/commands`가 canonical source이고 Codex adapter는 generator로 동기화합니다.
+
+```bash
+# Claude command → Codex skill adapter 동기화
+python3 scripts/sync-codex-skills.py
+
+# Notion OAuth (cigro 워크스페이스 선택)
+codex mcp login notion-cigro
+
+# Linear — issue-ticket 사용 시 최초 1회
+codex mcp add linear --url https://mcp.linear.app/mcp
+codex mcp login linear
+
+# MCP/Teams dependency 상태 확인 (secret 값은 출력하지 않음)
+python3 scripts/check-codex-skill-deps.py
+```
+
+Codex에서는 slash command 대신 `$`로 명시 호출합니다.
+
+```text
+$dev-chat --client rayeon 백업 정책 컨펌 전달
+$to-spec --client rayeon 고객 추가 요청
+$today-brief
+```
+
+Critical/High/Teams 전송 스킬은 자동 실행되지 않으며 외부 write 직전 PM Confirm Gate를 거칩니다. `.claude/commands`가 변경되면 adapter를 직접 수정하지 말고 `python3 scripts/sync-codex-skills.py`를 다시 실행하세요. 새 스킬이 보이지 않으면 Codex session을 재시작합니다.
+
 ---
 
 ## Step 4: Nexus Alias 등록
@@ -195,6 +224,11 @@ Teams 메시지 전송을 위한 flow가 필요합니다. 기존 flow를 공유�
 # 4. Teams (설정한 경우)
 /dev-chat --client {name} 테스트 메시지
 # → Teams 채팅방에 메시지 도착 확인
+
+# 5. Codex adapter 검증
+bash scripts/test-codex-skills.sh
+python3 scripts/check-codex-skill-deps.py
+# → 22개 adapter synchronized + 모든 dependency configured
 ```
 
 ### 체크리스트
@@ -206,6 +240,8 @@ Teams 메시지 전송을 위한 flow가 필요합니다. 기존 flow를 공유�
 □ /nexus-daily — Nexus 연동 확인
 □ .claude/nexus-alias.md — 본인 프로젝트 등록
 □ /dev-chat 테스트 — Teams 연동 확인 (선택)
+□ bash scripts/test-codex-skills.sh — Codex adapter 22개 검증
+□ python3 scripts/check-codex-skill-deps.py — Codex dependency 확인
 ```
 
 ---

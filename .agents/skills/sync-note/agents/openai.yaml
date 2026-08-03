@@ -1,0 +1,6 @@
+interface:
+  display_name: "Sync Note"
+  short_description: "Turning an internal sync meeting into a concise English Teams follow-up for the development team."
+  default_prompt: "Use $sync-note --client <name> [싱크 미팅 내용]"
+policy:
+  allow_implicit_invocation: false

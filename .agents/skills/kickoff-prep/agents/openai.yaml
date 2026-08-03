@@ -1,0 +1,13 @@
+interface:
+  display_name: "Kickoff Prep"
+  short_description: "Preparing a bilingual kickoff agenda, questions, glossary, and internal meeting preparation from an SRS."
+  default_prompt: "Use $kickoff-prep --client <name> [SRS Notion 링크]"
+policy:
+  allow_implicit_invocation: false
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion-cigro"
+      description: "Cigro Notion workspace for PM documents, communication, tasks, and action items"
+      transport: "streamable_http"
+      url: "https://mcp.notion.com/mcp"

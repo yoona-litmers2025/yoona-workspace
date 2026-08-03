@@ -1,0 +1,16 @@
+interface:
+  display_name: "Nexus Daily"
+  short_description: "Recording daily hours and work notes against existing Nexus OS project tasks."
+  default_prompt: "Use $nexus-daily"
+policy:
+  allow_implicit_invocation: false
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion-cigro"
+      description: "Cigro Notion workspace for PM documents, communication, tasks, and action items"
+      transport: "streamable_http"
+      url: "https://mcp.notion.com/mcp"
+    - type: "mcp"
+      value: "nexus-os"
+      description: "Nexus OS project, task, daily-entry, and PM todo operations"

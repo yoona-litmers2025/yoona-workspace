@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "skills": [
+    {
+      "name": "change-brief",
+      "display_name": "Change Brief",
+      "description": "Use when a legacy change-brief command is invoked and the request should be routed through the current to-spec change-triage workflow.",
+      "source": ".claude/commands/change-brief.md",
+      "source_kind": "claude-command",
+      "risk": "deprecated",
+      "allow_implicit_invocation": false,
+      "dependencies": [],
+      "replacement": "to-spec"
+    },
+    {
+      "name": "client-chat",
+      "display_name": "Client Chat",
+      "description": "Use when converting a developer message, technical update, or question into a polished Korean client chat message.",
+      "source": ".claude/commands/client-chat.md",
+      "source_kind": "claude-command",
+      "risk": "read-only",
+      "allow_implicit_invocation": true,
+      "dependencies": []
+    },
+    {
+      "name": "create-srs",
+      "display_name": "Create SRS",
+      "description": "Use when creating the initial Korean SRS or functional specification draft from multiple project sources.",
+      "source": ".claude/commands/create-srs.md",
+      "source_kind": "claude-command",
+      "risk": "critical",
+      "allow_implicit_invocation": false,
+      "dependencies": ["notion-cigro"]
+    },
+    {
+      "name": "daily-scrum",
+      "display_name": "Daily Scrum",
+      "description": "Use when preparing a project daily scrum log, PM action updates, and an English developer-team status message.",
+      "source": ".claude/commands/daily-scrum.md",
+      "source_kind": "claude-command",
+      "risk": "critical",
+      "allow_implicit_invocation": false,
+      "dependencies": ["notion-cigro", "teams-flow"]
+    },
+    {
+      "name": "dev-chat",
+      "display_name": "Dev Chat",
+      "description": "Use when turning a Korean client request, PM decision, or meeting follow-up into an English Teams message for developers.",
+      "source": ".claude/commands/dev-chat.md",
+      "source_kind": "claude-command",
+      "risk": "low",
+      "allow_implicit_invocation": false,
+      "dependencies": ["teams-flow"]
+    },
+    {
+      "name": "frontend-slides",
+      "display_name": "Frontend Slides",
+      "description": "Use when creating, converting, or enhancing an animated HTML presentation or web-based slide deck.",
+      "source": "frontend-slides/SKILL.md",
+      "source_kind": "agent-skill",
+      "risk": "medium",
+      "allow_implicit_invocation": true,
+      "dependencies": []
+    },
+    {
+      "name": "issue-ticket",
+      "display_name": "Issue Ticket",
+      "description": "Use when converting a confirmed request or bug into an English Linear issue with acceptance criteria and priority.",
+      "source": ".claude/commands/issue-ticket.md",
+      "source_kind": "claude-command",
+      "risk": "critical",
+      "allow_implicit_invocation": false,
+      "dependencies": ["linear"]
+    },
+    {
+      "name": "kickoff-prep",
+      "display_name": "Kickoff Prep",
+      "description": "Use when preparing a bilingual kickoff agenda, questions, glossary, and internal meeting preparation from an SRS.",
+      "source": ".claude/commands/kickoff-prep.md",
+      "source_kind": "claude-command",
+      "risk": "critical",
+      "allow_implicit_invocation": false,
+      "dependencies": ["notion-cigro"]
+    },
+    {
+      "name": "meeting-note",
+      "display_name": "Meeting Note",
+      "description": "Use when converting meeting notes or a transcript into a Notion meeting record plus developer and client messages.",
+      "source": ".claude/commands/meeting-note.md",
+      "source_kind": "claude-command",
+      "risk": "critical",
+      "allow_implicit_invocation": false,
+      "dependencies": ["notion-cigro"]
+    },
+    {
+      "name": "new-project",
+      "display_name": "New Project",
+      "description": "Use when onboarding a new client project into the local PM workspace and its required Notion databases and views.",
+      "source": ".claude/commands/new-project.md",
+      "source_kind": "claude-command",
+      "risk": "high",
+      "allow_implicit_invocation": false,
+      "dependencies": ["notion-cigro"]
+    },
+    {
+      "name": "nexus-daily",
+      "display_name": "Nexus Daily",
+      "description": "Use when recording daily hours and work notes against existing Nexus OS project tasks.",
+      "source": ".claude/commands/nexus-daily.md",
+      "source_kind": "claude-command",
+      "risk": "critical",
+      "allow_implicit_invocation": false,
+      "dependencies": ["notion-cigro", "nexus-os"]
+    },
+    {
+      "name": "qa-feedback",
+      "display_name": "QA Feedback",
+      "description": "Use when a legacy qa-feedback command is invoked and the request should be routed through the current qa-update intake workflow.",
+      "source": ".claude/commands/qa-feedback.md",
+      "source_kind": "claude-command",
+      "risk": "deprecated",
+      "allow_implicit_invocation": false,
+      "dependencies": [],
+      "replacement": "qa-update"
+    },
+    {
+      "name": "qa-plan",
+      "display_name": "QA Plan",
+      "description": "Use when creating an English internal QA plan from project scope, SRS, briefs, or a staging URL.",
+      "source": ".claude/commands/qa-plan.md",
+      "source_kind": "claude-command",
+      "risk": "medium",
+      "allow_implicit_invocation": true,
+      "dependencies": ["notion-cigro", "playwright"]
+    },
+    {
+      "name": "qa-request",
+      "display_name": "QA Request",
+      "description": "Use when drafting a Korean client QA or review request containing links, accounts, files, and testing guidance.",
+      "source": ".claude/commands/qa-request.md",
+      "source_kind": "claude-command",
+      "risk": "read-only",
+      "allow_implicit_invocation": true,
+      "dependencies": []
+    },
+    {
+      "name": "qa-update",
+      "display_name": "QA Update",
+      "description": "Use when synchronizing customer QA rows with internal English tickets or moving ready items back to client review.",
+      "source": ".claude/commands/qa-update.md",
+      "source_kind": "claude-command",
+      "risk": "critical",
+      "allow_implicit_invocation": false,
+      "dependencies": ["notion-cigro"]
+    },
+    {
+      "name": "setup-workspace",
+      "display_name": "Setup Workspace",
+      "description": "Use when initializing a PM workspace, creating the five required Notion databases, and configuring the local workspace IDs.",
+      "source": ".claude/commands/setup-workspace.md",
+      "source_kind": "claude-command",
+      "risk": "high",
+      "allow_implicit_invocation": false,
+      "dependencies": ["notion-cigro"]
+    },
+    {
+      "name": "srs-translate",
+      "display_name": "SRS Translate",
+      "description": "Use when translating and restructuring a Korean SRS into concise English requirements for developers and designers.",
+      "source": ".claude/commands/srs-translate.md",
+      "source_kind": "claude-command",
+      "risk": "critical",
+      "allow_implicit_invocation": false,
+      "dependencies": ["notion-cigro"]
+    },
+    {
+      "name": "sync-note",
+      "display_name": "Sync Note",
+      "description": "Use when turning an internal sync meeting into a concise English Teams follow-up for the development team.",
+      "source": ".claude/commands/sync-note.md",
+      "source_kind": "claude-command",
+      "risk": "low",
+      "allow_implicit_invocation": false,
+      "dependencies": ["teams-flow"]
+    },
+    {
+      "name": "to-spec",
+      "display_name": "To Spec",
+      "description": "Use when triaging an in-flight client change into scope buckets and writing confirmed in-round specification and task updates.",
+      "source": ".claude/commands/to-spec.md",
+      "source_kind": "claude-command",
+      "risk": "critical",
+      "allow_implicit_invocation": false,
+      "dependencies": ["notion-cigro"]
+    },
+    {
+      "name": "today-brief",
+      "display_name": "Today Brief",
+      "description": "Use when preparing the PM's daily brief from current action items, project activity, and calendar context.",
+      "source": ".claude/commands/today-brief.md",
+      "source_kind": "claude-command",
+      "risk": "high",
+      "allow_implicit_invocation": false,
+      "dependencies": ["notion-cigro", "google-workspace"]
+    },
+    {
+      "name": "todo",
+      "display_name": "PM Todo",
+      "description": "Use when adding a PM action to Nexus Todo and the Notion PM Action Hub backup.",
+      "source": ".claude/commands/todo.md",
+      "source_kind": "claude-command",
+      "risk": "high",
+      "allow_implicit_invocation": false,
+      "dependencies": ["notion-cigro", "nexus-os"]
+    },
+    {
+      "name": "weekly-report",
+      "display_name": "Weekly Report",
+      "description": "Use when preparing and saving a Korean client-facing weekly project report.",
+      "source": ".claude/commands/weekly-report.md",
+      "source_kind": "claude-command",
+      "risk": "critical",
+      "allow_implicit_invocation": false,
+      "dependencies": ["notion-cigro"]
+    }
+  ]
+}

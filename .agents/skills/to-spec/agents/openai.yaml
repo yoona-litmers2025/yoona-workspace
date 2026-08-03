@@ -1,0 +1,13 @@
+interface:
+  display_name: "To Spec"
+  short_description: "Triaging an in-flight client change into scope buckets and writing confirmed in-round specification and task updates."
+  default_prompt: "Use $to-spec --client <name> [--project name] [--srs path|URL] [--design path] [--source change-brief path] [요청 내용 또는 Notion URL]"
+policy:
+  allow_implicit_invocation: false
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion-cigro"
+      description: "Cigro Notion workspace for PM documents, communication, tasks, and action items"
+      transport: "streamable_http"
+      url: "https://mcp.notion.com/mcp"

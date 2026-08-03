@@ -1,0 +1,13 @@
+interface:
+  display_name: "Weekly Report"
+  short_description: "Preparing and saving a Korean client-facing weekly project report."
+  default_prompt: "Use $weekly-report --client <name> [이번 주 업데이트]"
+policy:
+  allow_implicit_invocation: false
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion-cigro"
+      description: "Cigro Notion workspace for PM documents, communication, tasks, and action items"
+      transport: "streamable_http"
+      url: "https://mcp.notion.com/mcp"

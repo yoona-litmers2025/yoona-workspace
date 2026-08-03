@@ -1,0 +1,6 @@
+interface:
+  display_name: "QA Request"
+  short_description: "Drafting a Korean client QA or review request containing links, accounts, files, and testing guidance."
+  default_prompt: "Use $qa-request --client <name> [전달물 정보]"
+policy:
+  allow_implicit_invocation: true

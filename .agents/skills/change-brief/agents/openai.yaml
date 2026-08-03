@@ -1,0 +1,6 @@
+interface:
+  display_name: "Change Brief"
+  short_description: "A legacy change-brief command is invoked and the request should be routed through the current to-spec change-triage w..."
+  default_prompt: "Use $change-brief --client <name> [--project <name>] [--srs <path|URL>] [--design <path>] [요청 내용 또는 Notion URL]"
+policy:
+  allow_implicit_invocation: false

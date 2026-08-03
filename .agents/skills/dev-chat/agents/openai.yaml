@@ -1,0 +1,6 @@
+interface:
+  display_name: "Dev Chat"
+  short_description: "Turning a Korean client request, PM decision, or meeting follow-up into an English Teams message for developers."
+  default_prompt: "Use $dev-chat --client <name> [요청 내용]"
+policy:
+  allow_implicit_invocation: false

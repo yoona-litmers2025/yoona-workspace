@@ -1,0 +1,16 @@
+interface:
+  display_name: "PM Todo"
+  short_description: "Adding a PM action to Nexus Todo and the Notion PM Action Hub backup."
+  default_prompt: "Use $todo [프로젝트] [할 일]"
+policy:
+  allow_implicit_invocation: false
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion-cigro"
+      description: "Cigro Notion workspace for PM documents, communication, tasks, and action items"
+      transport: "streamable_http"
+      url: "https://mcp.notion.com/mcp"
+    - type: "mcp"
+      value: "nexus-os"
+      description: "Nexus OS project, task, daily-entry, and PM todo operations"

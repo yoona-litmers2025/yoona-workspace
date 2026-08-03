@@ -1,0 +1,6 @@
+interface:
+  display_name: "Client Chat"
+  short_description: "Converting a developer message, technical update, or question into a polished Korean client chat message."
+  default_prompt: "Use $client-chat --client <name> [개발팀 메시지]"
+policy:
+  allow_implicit_invocation: true

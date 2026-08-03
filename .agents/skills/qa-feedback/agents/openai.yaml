@@ -1,0 +1,6 @@
+interface:
+  display_name: "QA Feedback"
+  short_description: "A legacy qa-feedback command is invoked and the request should be routed through the current qa-update intake workflow."
+  default_prompt: "Use $qa-feedback --qa-db <고객 QA DB 링크> --project <프로젝트명> [--internal <내부 QA 페이지 링크>]"
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,13 @@
+interface:
+  display_name: "Meeting Note"
+  short_description: "Converting meeting notes or a transcript into a Notion meeting record plus developer and client messages."
+  default_prompt: "Use $meeting-note --client <name> [미팅 메모 또는 녹취 파일]"
+policy:
+  allow_implicit_invocation: false
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion-cigro"
+      description: "Cigro Notion workspace for PM documents, communication, tasks, and action items"
+      transport: "streamable_http"
+      url: "https://mcp.notion.com/mcp"

@@ -1,0 +1,13 @@
+interface:
+  display_name: "QA Update"
+  short_description: "Synchronizing customer QA rows with internal English tickets or moving ready items back to client review."
+  default_prompt: "Use $qa-update <project-name> [--internal <URL>] [--client <URL>]"
+policy:
+  allow_implicit_invocation: false
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion-cigro"
+      description: "Cigro Notion workspace for PM documents, communication, tasks, and action items"
+      transport: "streamable_http"
+      url: "https://mcp.notion.com/mcp"

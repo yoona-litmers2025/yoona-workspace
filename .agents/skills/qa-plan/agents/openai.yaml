@@ -1,0 +1,16 @@
+interface:
+  display_name: "QA Plan"
+  short_description: "Creating an English internal QA plan from project scope, SRS, briefs, or a staging URL."
+  default_prompt: "Use $qa-plan <client> [--project name] [--round R{N}] [--srs path|URL] [--brief path] [--scope text] [--url staging-url] [--inspect-depth N] [--max-pages N]"
+policy:
+  allow_implicit_invocation: true
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "notion-cigro"
+      description: "Cigro Notion workspace for PM documents, communication, tasks, and action items"
+      transport: "streamable_http"
+      url: "https://mcp.notion.com/mcp"
+    - type: "mcp"
+      value: "playwright"
+      description: "Playwright browser inspection for read-only QA planning"
